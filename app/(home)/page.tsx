@@ -45,20 +45,20 @@ export default function HomePage() {
         </div>
 
         {/* Quick Install */}
-        <div className="mt-12 mx-auto max-w-3xl rounded-lg bg-muted">
-          <h3 className="font-semibold mb-4">Quick Install</h3>
+        <div className="mt-8 mx-auto max-w-3xl rounded-lg bg-muted p-6">
+          <h3 className="font-semibold mb-4 text-slate-900 dark:text-slate-100">Quick Install</h3>
           <CopyBlock>pip install llms-py</CopyBlock>
         </div>
 
         {/* Console Carousel Section */}
-        <div className="mt-12 w-full px-4">
+        <div className="mt-8 w-full px-4">
           <div className="w-full max-w-4xl mx-auto">
             <ConsoleCarousel screens={consoleScreens} />
           </div>
         </div>
 
-        <div className="mt-12 mx-auto max-w-3xl rounded-lg bg-muted">
-          <h3 className="font-semibold my-4">Run Server</h3>
+        <div className="mt-8 mx-auto max-w-3xl rounded-lg bg-muted p-6">
+          <h3 className="font-semibold mb-4 text-slate-900 dark:text-slate-100">Run Server</h3>
           <CopyBlock>llms --serve 8000</CopyBlock>
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
       {/* Getting Started Call-out */}
       <div className="w-full my-12 px-4">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-8 text-center shadow-lg">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-8 text-center shadow-lg dark:shadow-blue-900/20">
             <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
               Ready to Get Started?
             </h3>
@@ -81,7 +81,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/docs"
-                className="px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+                className="px-8 py-3 rounded-lg bg-blue-600 dark:bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
               >
                 📚 View Documentation
               </Link>
