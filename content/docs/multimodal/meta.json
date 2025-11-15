@@ -1,0 +1,11 @@
+{
+  "title": "Multimodal",
+  "defaultOpen": true,
+  "pages": [
+    "index",
+    "image",
+    "audio",
+    "files"
+  ]
+}
+

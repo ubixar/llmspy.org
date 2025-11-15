@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { ClickableCodeBlock } from './clickable-code-block';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 export default function HomePage() {
   return (
@@ -7,7 +9,8 @@ export default function HomePage() {
         <div className="space-y-4">
           <h1 className="text-5xl font-bold tracking-tight">llms.py</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Lightweight OpenAI compatible CLI and server gateway for multiple LLMs
+            Lightweight OpenAI compatible CLI, server gateway and OSS Open WebUI alternative
+            for Local and Cloud LLMs
           </p>
         </div>
 
@@ -29,31 +32,41 @@ export default function HomePage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mt-16 text-left">
-          <div className="p-6 rounded-lg border bg-card">
-            <h3 className="font-semibold text-lg mb-2">🪶 Ultra-Lightweight</h3>
-            <p className="text-sm text-muted-foreground">
-              Single file with just one aiohttp dependency. Perfect for ComfyUI and minimal environments.
-            </p>
-          </div>
-          <div className="p-6 rounded-lg border bg-card">
-            <h3 className="font-semibold text-lg mb-2">🌐 Multi-Provider</h3>
-            <p className="text-sm text-muted-foreground">
-              Access 160+ models from OpenAI, Anthropic, Google, Grok, Groq, Ollama, and more.
-            </p>
-          </div>
-          <div className="p-6 rounded-lg border bg-card">
-            <h3 className="font-semibold text-lg mb-2">💻 ChatGPT-like UI</h3>
-            <p className="text-sm text-muted-foreground">
-              Fast, privacy-focused web interface with dark mode and built-in analytics.
-            </p>
-          </div>
+          <Card className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold leading-none tracking-tight text-slate-900 dark:text-slate-100">🪶 Ultra-Lightweight</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-slate-700 dark:text-slate-300">
+                Single file with just one aiohttp dependency. Perfect for ComfyUI and minimal environments.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold leading-none tracking-tight text-slate-900 dark:text-slate-100">🌐 Multi-Provider</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-slate-700 dark:text-slate-300">
+                Access 160+ models from OpenAI, Anthropic, Google, Grok, Groq, Ollama, and more.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold leading-none tracking-tight text-slate-900 dark:text-slate-100">💻 ChatGPT-like UI</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-slate-700 dark:text-slate-300">
+                Fast, privacy-focused web interface with dark mode and built-in analytics.
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="mt-12 p-6 rounded-lg bg-muted">
           <h3 className="font-semibold mb-4">Quick Install</h3>
-          <code className="text-sm bg-background px-4 py-2 rounded border block">
-            pip install llms-py
-          </code>
+          <ClickableCodeBlock>pip install llms-py</ClickableCodeBlock>
         </div>
       </div>
     </main>

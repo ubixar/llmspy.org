@@ -1,9 +1,9 @@
 {
   "title": "Features",
+  "defaultOpen": true,
   "pages": [
-    "index",
+    "cli",
     "web-ui",
-    "multimodal",
     "analytics",
     "providers"
   ]

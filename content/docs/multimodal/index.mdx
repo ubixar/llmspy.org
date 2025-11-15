@@ -1,0 +1,76 @@
+---
+title: Multimodal Support
+description: Work with images, audio, and documents in llms.py
+---
+
+llms.py provides comprehensive support for multiple input modalities beyond just text, allowing you to process images, audio files, and documents with capable AI models.
+
+### Overview
+
+llms.py supports three main types of multimodal inputs:
+
+- **Images** 🖼️ - Process and analyze images with vision-capable models
+- **Audio** 🎤 - Transcribe and analyze audio files
+- **Files** 📎 - Process and analyze documents, especially PDFs
+
+Each modality has its own set of features, supported models, and use cases.
+
+## Default Templates
+
+llms.py comes with default chat templates for each modality in `llms.json`:
+
+```json
+{
+  "defaults": {
+    "text": { ... },
+    "image": {
+      "model": "gemini-2.5-flash",
+      "messages": [...]
+    },
+    "audio": {
+      "model": "gpt-4o-audio-preview",
+      "messages": [...]
+    },
+    "file": {
+      "model": "gpt-5",
+      "messages": [...]
+    }
+  }
+}
+```
+
+These templates are used when you provide the respective file type without a custom template.
+
+## Quick Start
+
+### Images
+```bash
+llms --image ./screenshot.png "What's in this image?"
+```
+
+### Audio
+```bash
+llms --audio ./recording.mp3 "Transcribe this audio"
+```
+
+### Files
+```bash
+llms --file ./document.pdf "Summarize this document"
+```
+
+## Learn More
+
+<Cards>
+  <Card title="Image Support" href="/docs/multimodal/image" />
+  <Card title="Audio Support" href="/docs/multimodal/audio" />
+  <Card title="File Support" href="/docs/multimodal/files" />
+</Cards>
+
+## Next Steps
+
+<Cards>
+  <Card title="Web UI" href="/docs/features/web-ui" />
+  <Card title="CLI Reference" href="/docs/cli" />
+  <Card title="Configuration" href="/docs/configuration" />
+</Cards>
+
