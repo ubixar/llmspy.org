@@ -36,7 +36,6 @@ export default function HomePage() {
           </Link>
           <a
             href="https://github.com/ServiceStack/llms"
-            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg border-2 border-slate-300 dark:border-slate-600 bg-background hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500 transition-all font-semibold shadow-md hover:shadow-lg"
           >
@@ -87,7 +86,6 @@ export default function HomePage() {
               </Link>
               <a
                 href="https://github.com/ServiceStack/llms"
-                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-lg border-2 border-blue-600 dark:border-blue-500 bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors font-semibold shadow-md hover:shadow-lg"
               >
