@@ -2,9 +2,11 @@
   "title": "Documentation",
   "pages": [
     "index",
+    "v3",
     "getting-started",
     "features",
     "multimodal",
+    "extensions",
     "configuration",
     "cli",
     "deployment"

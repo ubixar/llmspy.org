@@ -1,0 +1,241 @@
+---
+title: UI Extensions API
+description: This guide provides a walkthrough of the LLM UI Extensions API (`ctx.mjs`), using the `xmas` extension as a practical example. The Extensions API allows you to customize the UI, add new pages, modify the layout, and intercept chat functionality.
+---
+
+
+## Extension Entry Point
+
+Every UI extension must export an object with an `install(ctx)` method. `ctx` is the `AppContext` instance which provides access to the core UI functionality.
+
+```js
+export default {
+    install(ctx) {
+        // Registration logic goes here
+    },
+    async load(ctx) {
+        // Optional async loading logic
+        // e.g., fetching initial data
+    }
+}
+```
+
+## 1. Registering Components
+
+You can register custom Vue components to be used throughout the application or to replace existing ones. This is done using `ctx.components()`.
+
+### Replacing Core Components
+Overrides default components like `Brand`, `Welcome`, or `HomeTools` by registering components with the same name.
+
+```js
+// Replace Brand component with a custom Christmas theme
+const Brand = {
+    template: `
+    <div class="flex-shrink-0 p-2 border-b border-gray-200 dark:border-gray-700 select-none">
+        <button type="button" @click="$router.push('/')" class="...">
+            🎄 {{ $state.title }} 🎄
+        </button>
+    </div>`
+}
+
+const Welcome = {
+    template: `<!-- Custom Welcome Screen -->`,
+    setup() { /* ... */ }
+}
+
+const HomeTools = {
+    template: `<DarkModeToggle class="mt-4" />`,
+}
+
+export default {
+    install(ctx) {
+        ctx.components({
+            Brand,
+            Welcome,
+            HomeTools,
+            // Register other custom components
+            XmasPage,
+            XmasTopPanel,
+        })
+    }
+}
+```
+
+## 2. Adding Navigation Icons
+
+### Left Sidebar Icons
+Use `ctx.setLeftIcons(icons)` to add icons to the left sidebar.
+
+*   `component`: The Vue component for the icon button.
+*   `isActive`: A function receiving `{ path }` to determine active state.
+
+```js
+ctx.setLeftIcons({
+    xmas: {
+        component: {
+            template: `<button @click="$ctx.togglePath('/xmas')" class="...">🎄</button>`
+        },
+        isActive({ path }) { return path === '/xmas' }
+    }
+})
+```
+
+### Top Bar Icons
+Use `ctx.setTopIcons(icons)` to add icons to the top navigation bar.
+
+*   `component`: The Vue component for the icon button.
+*   `isActive`: A function receiving `{ top }` to determine active state.
+
+```js
+ctx.setTopIcons({
+    xmas: {
+        component: {
+            template: `<button @click="toggle" class="...">🎁</button>`,
+            setup() {
+                const ctx = inject('ctx')
+                async function toggle() {
+                     // Toggles the Top Panel named 'XmasTopPanel'
+                    if (ctx.toggleTop('XmasTopPanel')) {
+                        // Start a new thread when opened
+                        ctx.threads.startNewThread({ title: 'Ask Santa' })
+                    }
+                }
+                return { toggle }
+            }
+        },
+        isActive({ top }) {
+            return top === 'XmasTopPanel'
+        }
+    }
+})
+```
+
+## 3. Adding New Pages & Routes
+
+You can push new route definitions directly to `ctx.routes`.
+
+```js
+const XmasPage = {
+    template: `<div>Merry Christmas!</div>` 
+}
+
+ctx.routes.push({ 
+    path: '/xmas', 
+    component: XmasPage, 
+    meta: { title: `Merry Christmas!` } 
+})
+```
+
+## 4. Controlling Layout & Logic
+
+### Router Hooks
+Intercept navigation changes using `ctx.onRouterBeforeEach`. This is useful for managing UI state based on the current page.
+
+```js
+// Auto hide top panel on non-chat pages
+ctx.onRouterBeforeEach((to, from) => {
+    if (to.path !== '/' && !to.path.startsWith('/c/')) {
+        ctx.toggleTop('XmasTopPanel', false)
+    }
+})
+```
+
+### Styling Interception
+Use `ctx.onClass` to dynamically modify CSS classes for layout elements (like `body` or `page`).
+
+```js
+ctx.onClass((id, cls) => {
+    // Only apply custom styles on the home page
+    if (ctx.router.currentRoute.value?.path !== '/') return
+
+    // Add festive background colors to the page container
+    if (id == 'page') {
+        return cls + ' bg-slate-50! dark:bg-slate-950!'
+    }
+})
+```
+
+## 5. Chat & Thread Integration
+
+You can intercept and modify chat behavior to create custom personas or functionality.
+
+### Thread Creation Filters
+Use `ctx.createThreadFilters` to modify new threads as they are created.
+
+```js
+const santaSystemPrompt = `You are Santa Claus...`
+const isTopOpen = () => ctx.layout.top === 'XmasTopPanel'
+
+ctx.createThreadFilters.push(thread => {
+    // Only apply if our specific UI panel is open
+    if (!isTopOpen()) return
+    thread.systemPrompt = santaSystemPrompt
+})
+```
+
+### Chat Request Filters
+Use `ctx.chatRequestFilters` to modify the request body before it is sent to the LLM.
+
+```js
+ctx.chatRequestFilters.push(({ request, thread }) => {
+    if (!isTopOpen()) return
+
+    // Enforce the system prompt for every request
+    request.messages = request.messages.filter(x => x.role !== 'system')
+    request.messages.unshift({
+        role: 'system',
+        content: santaSystemPrompt
+    })
+})
+```
+
+## 6. Backend Integration
+
+### Extension Scope
+Use `ctx.scope(id)` to create a scoped helper for standard API interactions. It handles base URLs and state injection.
+
+```js
+export default {
+    install(ctx) {
+        // Create scope for 'xmas' extension
+        let ext = ctx.scope('xmas') 
+        
+        // ...
+        
+        // Use 'ext' to make requests to /api/ext/xmas/greet
+        async function onSubmit(e) {
+            const form = new FormData(e.target)
+            const res = await ext.postForm('/greet', {
+                body: form
+            })
+            // ...
+        }
+    },
+    async load(ctx) {
+        // Load initial data
+        let ext = ctx.scope('xmas')
+        ctx.state.greetings = await ext.getJson("/greetings.json")
+    }
+}
+```
+
+## Full Example Component: Top Panel
+
+This is how you define a complex UI component like a Top Panel. It's just a standard Vue 3 component.
+
+```js
+const XmasTopPanel = {
+    template: `
+        <div class="w-full bg-red-800 ...">
+             <!-- Panel Content -->
+             <h1>Ask Santa</h1>
+             <p>Chat directly with Santa Claus...</p>
+        </div>
+    `,
+    setup() {
+        return {
+            // ... setup logic
+        }
+    }
+}
+```
