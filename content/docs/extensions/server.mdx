@@ -2,3 +2,216 @@
 title: Server Extensions API
 description: This guide provides a walkthrough of the LLM Server Extensions API
 ---
+
+xmas __init__.py:
+
+Example of creating a simple extension that adds a greet endpoint to the server.
+
+```python
+# runs after providers are configured but before server is run
+def install(ctx):
+
+    # Load greetings
+    # Load greetings
+    greetings_path = Path(__file__).parent / 'ui' / 'greetings.json'
+    if greetings_path.exists():
+        with open(greetings_path, 'r') as f:
+            greetings = json.load(f)
+    else:
+        greetings = ["Merry Christmas!"]
+
+    count = 0
+
+    async def greet(request):
+        nonlocal count
+        name = request.query.get('name')
+        if not name:
+            data = await request.post()
+            name = data.get('name')
+
+        if not name:
+            name = 'Stranger'
+
+        greeting = greetings[count % len(greetings)]
+        count += 1
+        return web.json_response({"result":f"Hello {name}, {greeting}"})
+
+    ctx.add_get("greet", greet)
+    ctx.add_post("greet", greet)
+
+
+# register install extension handler
+__install__ = install
+```
+
+system_tools __init__.py:
+
+Example that adds and endpoint that returns User system prompts. First checks if user is signed in (Github OAuth), then returns prompts for that user if exists, otherwise returns default prompts from all users or default prompts in this extension.
+
+```python
+default_prompts = [
+    {"name": "Helpful Assistant", "prompt": "You are a helpful assistant."},
+]
+
+# runs after providers are configured but before server is run
+def install(ctx):
+    # helper to get user or default prompts
+    def get_user_prompts(request):
+        candidate_paths = []
+        # check if user is signed in
+        username = ctx.get_username(request)
+        if username:
+            # if signed in (Github OAuth), return the prompts for this user if exists
+            candidate_paths.append(
+                os.path.join(Path.home(), ".llms", "user", username, "system_prompts", "prompts.json")
+            )
+        # return default prompts for all users if exists
+        candidate_paths.append(os.path.join(Path.home(), ".llms", "user", "default", "system_prompts", "prompts.json"))
+        # otherwise return the default prompts from this repo
+        candidate_paths.append(os.path.join(ctx.path, "ui", "prompts.json"))
+
+        # iterate all candidate paths and when exists return its json
+        for path in candidate_paths:
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    txt = f.read()
+                    return json.loads(txt)
+        return default_prompts
+
+    # API Handler to get prompts
+    async def get_prompts(request):
+        prompts_json = get_user_prompts(request)
+        return web.json_response(prompts_json)
+
+    ctx.add_get("prompts.json", get_prompts)
+
+
+# register install extension handler
+__install__ = install
+```
+
+
+duckduckgo __init__.py:
+
+Example of creating a tool extension that adds a web search tool to the server. Uses requirements.txt to install 3rd Party ddgs dependency.
+
+```python
+from typing import Any, Dict
+
+from ddgs import DDGS
+
+
+def web_search(query: str, max_results: int | None = 10, page: int = 1) -> Dict[str, Any]:
+    """
+    Perform a web search using DuckDuckGo.
+    """
+
+    try:
+        results = []
+        with DDGS() as ddgs:
+            # text() returns an iterator
+            for r in ddgs.text(query, max_results=max_results):
+                results.append(r)
+        return {"query": query, "results": results}
+    except Exception as e:
+        return {"query": query, "error": str(e)}
+
+
+def install(ctx):
+    ctx.register_tool(web_search)
+
+
+__install__ = install
+```
+
+See [core_tools](https://github.com/llmspy/core_tools/blob/main/__init__.py) for more tool examples.
+
+## Custom Provider Implementation example
+
+Example of creating a custom provider that extends the GeneratorBase class to add support for OpenRouter image generation.
+
+```python
+def install(ctx):
+    from llms.main import GeneratorBase
+
+    # https://openrouter.ai/docs/guides/overview/multimodal/image-generation
+    class OpenRouterGenerator(GeneratorBase):
+        sdk = "openrouter/image"
+
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+
+        def to_response(self, response, chat, started_at):
+            # go through all image responses and save them to cache
+            for choice in response["choices"]:
+                if "message" in choice and "images" in choice["message"]:
+                    for image in choice["message"]["images"]:
+                        if choice["message"]["content"] == "":
+                            choice["message"]["content"] = self.default_content
+                        if "image_url" in image:
+                            data_uri = image["image_url"]["url"]
+                            if data_uri.startswith("data:"):
+                                parts = data_uri.split(",", 1)
+                                ext = parts[0].split(";")[0].split("/")[1]
+                                base64_data = parts[1]
+                                model = chat["model"].split("/")[-1]
+                                filename = f"{model}-{choice['index']}.{ext}"
+                                info = {
+                                    "model": model,
+                                    "prompt": ctx.last_user_prompt(chat),
+                                }
+                                relative_url, info = ctx.save_image_to_cache(base64_data, filename, info)
+                                image["image_url"]["url"] = relative_url
+
+            return response
+
+        async def chat(self, chat, provider=None):
+            headers = self.get_headers(provider, chat)
+            if provider is not None:
+                chat["model"] = provider.provider_model(chat["model"]) or chat["model"]
+
+            started_at = time.time()
+            if ctx.MOCK:
+                print("Mocking OpenRouterGenerator")
+                text = ctx.text_from_file(f"{ctx.MOCK_DIR}/openrouter-image.json")
+                return ctx.log_json(self.to_response(json.loads(text), chat, started_at))
+            else:
+                chat_url = provider.chat_url
+                chat = await self.process_chat(chat, provider_id=self.id)
+                ctx.log(f"POST {chat_url}")
+                ctx.log(provider.chat_summary(chat))
+                # remove metadata if any (conflicts with some providers, e.g. Z.ai)
+                chat.pop("metadata", None)
+
+                async with aiohttp.ClientSession() as session, session.post(
+                    chat_url,
+                    headers=headers,
+                    data=json.dumps(chat),
+                    timeout=aiohttp.ClientTimeout(total=300),
+                ) as response:
+                    return ctx.log_json(self.to_response(await self.response_json(response), chat, started_at))
+
+    ctx.add_provider(OpenRouterGenerator)
+
+
+__install__ = install
+```
+
+This new implementation can be used by registering it as the **image** modality whose **npm** matches the providers **sdk** in `llms.json`, e.g:
+
+```json
+{
+    "openrouter": {
+        "enabled": true,
+        "id": "openrouter",
+        "modalities": {
+            "image": {
+                "name": "OpenRouter Image",
+                "npm": "openrouter/image"
+            }
+        }
+    }
+}
+```
+
+Find more Provider implementations in [providers](https://github.com/ServiceStack/llms/tree/main/llms/providers) folder.
