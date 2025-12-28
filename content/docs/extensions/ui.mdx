@@ -1,16 +1,23 @@
 ---
 title: UI Extensions API
-description: This guide provides a walkthrough of the LLM UI Extensions API (`ctx.mjs`), using the `xmas` extension as a practical example. The Extensions API allows you to customize the UI, add new pages, modify the layout, and intercept chat functionality.
+description: This guide provides a walkthrough of the LLM UI Extensions API which allows you to customize the UI, add new pages, modify the layout, and intercept chat functionality.
 ---
 
+We'll use the [xmas extension](https://github.com/llmspy/xmas/blob/main/ui/index.mjs) as a practical example to explore the capabilities
+in the App Extensions API which starts from [ctx.mjs](https://github.com/ServiceStack/llms/blob/main/llms/ui/ctx.mjs).
 
 ## Extension Entry Point
 
 Every UI extension must export an object with an `install(ctx)` method. `ctx` is the `AppContext` instance which provides access to the core UI functionality.
 
 ```js
+let ext
+
 export default {
     install(ctx) {
+        // Manage state, stored prefs and API Integrations scoped to this ExtensionScope
+        ext = ctx.scope('xmas')
+        
         // Registration logic goes here
     },
     async load(ctx) {
@@ -25,10 +32,9 @@ export default {
 You can register custom Vue components to be used throughout the application or to replace existing ones. This is done using `ctx.components()`.
 
 ### Replacing Core Components
-Overrides default components like `Brand`, `Welcome`, or `HomeTools` by registering components with the same name.
+Overrides default `Brand`, `Welcome`, and `HomeTools` components by registering components with the same name.
 
 ```js
-// Replace Brand component with a custom Christmas theme
 const Brand = {
     template: `
     <div class="flex-shrink-0 p-2 border-b border-gray-200 dark:border-gray-700 select-none">
@@ -38,12 +44,10 @@ const Brand = {
     </div>
     `,
 }
-
 const Welcome = {
     template: `<!-- Custom Welcome Screen -->`,
     setup() { /* ... */ }
 }
-
 const HomeTools = {
     template: `<DarkModeToggle class="mt-4" />`,
 }
@@ -51,13 +55,35 @@ const HomeTools = {
 export default {
     install(ctx) {
         ctx.components({
+            // Replaces built-in UI Components
             Brand,
             Welcome,
             HomeTools,
-            // Register other custom components
+            // Registers other custom components used in this UI Extension
             XmasPage,
             XmasTopPanel,
         })
+    }
+}
+```
+
+## Full Example Component: Top Panel
+
+This is how you define a complex UI component like a Top Panel. It's just a standard Vue 3 component.
+
+```js
+const XmasTopPanel = {
+    template: `
+        <div class="w-full bg-red-800 ...">
+             <!-- Panel Content -->
+             <h1>Ask Santa</h1>
+             <p>Chat directly with Santa Claus...</p>
+        </div>
+    `,
+    setup() {
+        return {
+            // ... setup logic
+        }
     }
 }
 ```
@@ -68,7 +94,7 @@ export default {
 Use `ctx.setLeftIcons(icons)` to add icons to the left sidebar.
 
 *   `component`: The Vue component for the icon button.
-*   `isActive`: A function receiving `{ path }` to determine active state.
+*   `isActive`: A function receiving layout parts like `{ path }` to determine active state.
 
 ```js
 ctx.setLeftIcons({
@@ -85,7 +111,7 @@ ctx.setLeftIcons({
 Use `ctx.setTopIcons(icons)` to add icons to the top navigation bar.
 
 *   `component`: The Vue component for the icon button.
-*   `isActive`: A function receiving `{ top }` to determine active state.
+*   `isActive`: A function receiving layout parts like `{ top }` to determine active state.
 
 ```js
 ctx.setTopIcons({
@@ -181,7 +207,7 @@ Use `ctx.chatRequestFilters` to modify the request body before it is sent to the
 ctx.chatRequestFilters.push(({ request, thread }) => {
     if (!isTopOpen()) return
 
-    // Enforce the system prompt for every request
+    // Use Santa's system prompt for every request when XmasTopPanel is open
     request.messages = request.messages.filter(x => x.role !== 'system')
     request.messages.unshift({
         role: 'system',
@@ -231,9 +257,8 @@ The `XmasPage` component uses `ctx.chat.completion` to generate a Christmas stor
 ```js
 onMounted(async () => {
     // 1. Find an available model
-    const freeStoryModelNames = ['Kimi K2 0905', 'Kimi K2 Instruct', 'Kimi K2 (free)', 'Kimi Dev 72b (free)', 'GPT OSS 120B']
-    const availableStoryModel = freeStoryModelNames.map(name => ctx.chat.getModel(name)).find(x => !!x)
-    
+    const storyModelNames = ['Kimi K2 0905', 'Kimi K2 Instruct', 'Kimi K2 (free)', 'GPT OSS 120B']
+    const availableStoryModel = storyModelNames.map(name => ctx.chat.getModel(name)).find(x => !!x)
     if (!availableStoryModel) {
         console.log('No story models available')
         return
@@ -244,7 +269,7 @@ onMounted(async () => {
     // 2. Create the request
     const request = ctx.chat.createRequest({
         model: availableStoryModel,
-        text: `Write a short, feel-good Christmas story set on a quiet winter evening. Focus on simple kindness, cozy details, and gentle magic—twinkling lights, warm drinks, falling snow, and a small act of generosity that brings people together. Keep the tone hopeful and comforting, with a soft, joyful ending that leaves the reader smiling.`,
+        text: `Write a short, feel-good Christmas story set on a quiet winter evening...`,
         systemPrompt: santaSystemPrompt,
     })
 
@@ -260,25 +285,4 @@ onMounted(async () => {
         story.value = api.error.message
     }
 })
-```
-
-## Full Example Component: Top Panel
-
-This is how you define a complex UI component like a Top Panel. It's just a standard Vue 3 component.
-
-```js
-const XmasTopPanel = {
-    template: `
-        <div class="w-full bg-red-800 ...">
-             <!-- Panel Content -->
-             <h1>Ask Santa</h1>
-             <p>Chat directly with Santa Claus...</p>
-        </div>
-    `,
-    setup() {
-        return {
-            // ... setup logic
-        }
-    }
-}
 ```
