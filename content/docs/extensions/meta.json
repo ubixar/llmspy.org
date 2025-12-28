@@ -1,0 +1,8 @@
+{
+  "title": "Extensions",
+  "defaultOpen": true,
+  "pages": [
+    "ui",
+    "server"
+  ]
+}
