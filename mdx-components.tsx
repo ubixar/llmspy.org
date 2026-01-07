@@ -5,7 +5,9 @@ import { CopyBlock } from '@/app/(home)/copy-block';
 import { Info } from '@/components/info';
 import { Tip } from '@/components/tip';
 import { YouTube } from '@/components/youtube';
+import { Screenshot } from '@/components/screenshot';
 import { ScreenshotsGallery } from '@/components/screenshots-gallery';
+import { SystemPrompts } from '@/components/system-prompts';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -16,7 +18,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Info,
     Tip,
     YouTube,
+    Screenshot,
     ScreenshotsGallery,
+    SystemPrompts,
     ...components,
   };
 }

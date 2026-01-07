@@ -5,7 +5,9 @@
     "cli",
     "web-ui",
     "analytics",
+    "core-tools",
     "katex",
-    "model-selector"
+    "model-selector",
+    "system-prompts"
   ]
 }

@@ -76,7 +76,7 @@ export function ScreenshotsGallery({ images, className, gridClass }: Screenshots
     }, [lightboxOpen, closeLightbox, nextImage, previousImage, imageKeys.length]);
 
     return (
-        <div className={className ?? "not-prose my-16"}>
+        <div className={className ?? "not-prose my-8"}>
             {/* Gallery Grid */}
             <div className={gridClass || 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'}>
                 {Object.entries(images).map(([title, imageUrl]) => (

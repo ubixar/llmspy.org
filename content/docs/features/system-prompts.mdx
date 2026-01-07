@@ -1,0 +1,32 @@
+---
+title: System Prompts Library
+description: Display mathematical expressions in your conversations using KaTeX.
+---
+
+The [system_prompts](https://github.com/ServiceStack/llms/tree/main/llms/extensions/system_prompts) extension 
+configures AI requests with a library of **over 200+** awesome curated system prompts that can be selected from the UI.
+
+### Custom System Prompts
+
+You can maintain your own library of system prompts for all anonymous users at:
+`~/.llms/user/default/system-prompts.json`
+
+Or for signed in users at:
+`~/.llms/user/<github-user>/system-prompts.json`
+
+With the JSON file simply containing an array of names and their system prompts, e.g:
+
+```json
+[
+    {
+        "name": "Helpful Assistant",
+        "prompt": "You are a helpful assistant."
+    }
+]
+```
+
+<Screenshot src="/img/llms-system-prompt.webp" />
+
+Browse the complete collection of available system prompts below:
+
+<SystemPrompts />
