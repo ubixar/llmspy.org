@@ -1,0 +1,9 @@
+{
+  "title": "Media Generation",
+  "defaultOpen": true,
+  "pages": [
+    "image-generation",
+    "audio-generation",
+    "media-gallery"
+  ]
+}

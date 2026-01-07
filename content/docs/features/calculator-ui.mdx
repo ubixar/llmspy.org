@@ -1,21 +1,37 @@
 ---
 title: Calculator UI
-description: Display mathematical expressions in your conversations using KaTeX.
+description: A powerful and safe mathematical expression evaluator with a rich web interface.
 ---
 
-The [katex](https://github.com/ServiceStack/llms/tree/main/llms/extensions/katex) extension enables beautiful rendering of LaTeX math expressions in AI responses using [KaTeX](https://katex.org/). It integrates automatically with the markdown parser to render math equations in both inline and block formats.
+A dedicated UI has been added for the `calc` tool with support for evaluating mathematical python expressions, including arithmetic, comparison, boolean operators, `math.*` functions & constants and python list comprehensions:
 
-### Features
+<Screenshot src="/img/run-calc.webp"/>
 
-- **Fast Rendering**: Uses KaTeX for high-performance rendering of math expressions.
-- **Inline Math**: Renders math within text using `$` or `$$` delimiters.
-- **Block Math**: Renders complex equations in their own block using `$` or `$$` delimiters across multiple lines.
-- **Auto-Integration**: Automatically extends the `marked` parser used in the application.
+## Features
 
-### Popular math expressions
+### 🖥️ UX Friendly Interface
+Experience a clean, modern interface designed for efficiency. The UI is fully responsive and supports dark mode, seamlessly integrating with the rest of the application.
 
-<Screenshot src="/img/rendering-katex.webp" />
+### 💾 Persistent History
+Never lose track of your calculations. The Calculator automatically saves your history to `localStorage`, ensuring your previous expressions and results are preserved between sessions.
 
-### Basic math expressions
+### ⚡ 1-Click Interaction
+Streamline your workflow with interactive history items:
+- **Load & Copy**: Click on any past expression or answer to instantly load it into the input field and copy it to your clipboard.
+- **Visual Feedback**: Temporary checkmarks confirm successful copy actions.
 
-<Screenshot src="/img/rendering-katex2.webp"/>
+### ⌨️ Keyboard-Free Access
+While full keyboard support is available, you can perform complex calculations entirely via the UI:
+- **Numbers & Constants**: Quick access to digits and mathematical constants like `pi`, `e`, `inf`.
+- **Operators**: Comprehensive set of buttons for arithmetic (`+`, `-`, `*`, `/`, `%`, `^`) and boolean logic (`and`, `or`, `not`).
+- **Functions**: One-click insertion or wrapping of selection for all supported math functions.
+
+### 🐍 Python Math Support
+Unlock the power of Python's math library:
+- **Math Functions**: Support for `sin`, `cos`, `tan`, `sqrt`, `log`, `factorial`, and many more.
+- **Statistics**: Built-in functions for `mean`, `median`, `stdev`, and `variance`.
+
+### 🛡️ Safe Evaluation
+Security is a priority. Instead of using Python's unsafe `eval()`, the Calculator uses a robust **AST (Abstract Syntax Tree) evaluator**.
+- **Restricted Environment**: Only allowed mathematical operations and functions are executed.
+- **No Side Effects**: Prevents arbitrary code execution, making it safe to evaluate expressions from untrusted sources.

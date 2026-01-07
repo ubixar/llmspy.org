@@ -392,10 +392,10 @@ This makes a standard chat completion request that doesn't return until the full
 To start a new Chat Thread use:
 
 ```js
-await ctx.threads.startNewThread({ title, model })
+await ctx.threads.startNewThread({ title, model, redirect })
 ```
 
-Which creates and returns a new empty Thread in the Server then navigates the UI to the new thread page.
+Which creates and returns a new empty Thread in the Server, if `redirect:true` also navigates the UI to the new thread page.
 
 Then to begin processing an asynchronous chat completion request use:
 

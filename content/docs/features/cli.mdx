@@ -27,7 +27,7 @@ llms --audio recording.mp3 "Transcribe this audio"
 llms --file document.pdf "Summarize this PDF"
 ```
 
-## 5. Configure Default Model
+## Configure Default Model
 
 Set your preferred default model:
 
@@ -49,6 +49,21 @@ llms -s "You are a quantum expert" "Explain quantum computing"
 
 # Display full JSON response
 llms "Hello" --raw
+```
+
+### Tool Calling & Function Calling
+
+All registered tools are automatically available in CLI mode:
+
+```bash
+# Use all available tools (default)
+llms "Read the file data.txt and calculate the sum"
+
+# Use specific tools
+llms --tools calc,get_current_time "What time is it in Tokyo and what's 15% of 230?"
+
+# Disable all tools
+llms --tools none "Tell me a joke"
 ```
 
 ### Image Analysis
@@ -82,6 +97,36 @@ llms --file report.pdf "Summarize the key points"
 
 # Extract data
 llms -m gemini-flash-latest --file policy.pdf "Extract action items"
+```
+
+### Image Generation
+
+Generate images directly from the CLI:
+
+```bash
+# Generate image with default model
+llms --out image "A serene mountain landscape at sunset"
+
+# Generate with specific model
+llms -m "gemini-2.5-flash-image" --out image "Logo for a tech startup"
+
+# All generated images are saved to ~/.llms/cache
+llms -m "Gemini 2.5 Flash Image" --out image "cat in a hat"
+```
+
+### Audio Generation
+
+Generate audio with Text-to-Speech models:
+
+```bash
+# Generate audio with default TTS model
+llms --out audio "Welcome to our podcast"
+
+# With specific TTS model
+llms -m gemini-2.5-pro-preview-tts --out audio "Merry Christmas"
+
+# All generated audio is saved to ~/.llms/cache
+llms -m gemini-2.5-flash-preview-tts --out audio "Hello world"
 ```
 
 
@@ -135,6 +180,28 @@ llms --default grok-4-fast
 
 # Check provider status
 llms --check groq
+
+# Update provider definitions from models.dev
+llms --update-providers
+```
+
+### Extensions Management
+
+```bash
+# List available extensions
+llms --add
+
+# Install an extension
+llms --add duckduckgo
+
+# Install from GitHub
+llms --add github-user/repo-name
+
+# List installed extensions
+llms --remove
+
+# Uninstall an extension
+llms --remove duckduckgo
 ```
 
 ## Options Reference
@@ -317,6 +384,68 @@ llms --check groq
 llms --check groq kimi-k2 llama4:400b
 ```
 
+#### `--update-providers`
+
+Update provider definitions from models.dev:
+
+```bash
+llms --update-providers
+```
+
+#### `--tools TOOLS`
+
+Enable specific tools for function calling:
+
+```bash
+# Use all tools (default)
+llms --tools all "What time is it and calculate 15% of 230?"
+
+# Use specific tools
+llms --tools calc,get_current_time "What time is it in Tokyo?"
+
+# Disable all tools
+llms --tools none "Tell me a joke"
+```
+
+#### `--out OUTPUT_TYPE`
+
+Generate media output (image or audio):
+
+```bash
+# Generate images
+llms --out image "A serene mountain landscape"
+
+# Generate audio
+llms --out audio "Welcome message"
+```
+
+#### `--add [EXTENSION]`
+
+Install or list available extensions:
+
+```bash
+# List available extensions
+llms --add
+
+# Install an extension
+llms --add duckduckgo
+
+# Install from GitHub
+llms --add github-user/repo-name
+```
+
+#### `--remove [EXTENSION]`
+
+Uninstall or list installed extensions:
+
+```bash
+# List installed extensions
+llms --remove
+
+# Uninstall an extension
+llms --remove duckduckgo
+```
+
 ### Help
 
 #### `-h, --help`
@@ -443,6 +572,74 @@ llms --default grok-4-fast
 # Check provider status
 llms --check groq
 llms --check groq kimi-k2 llama4:400b gpt-oss:120b
+
+# Update provider definitions from models.dev (auto-updated daily)
+llms --update-providers
+```
+
+### Extensions Management
+
+```bash
+# List available extensions from github.com/llmspy
+llms --add
+
+# Install an extension
+llms --add duckduckgo
+
+# Install a 3rd-party extension from GitHub
+llms --add github-user/repo-name
+
+# List installed extensions
+llms --remove
+
+# Uninstall an extension
+llms --remove duckduckgo
+```
+
+### Tool Calling & Function Calling
+
+```bash
+# Use all available tools (default)
+llms "Read the file data.txt and calculate the sum"
+
+# Use specific tools
+llms --tools calc,get_current_time "What time is it in Tokyo and what's 15% of 230?"
+
+# Disable all tools
+llms --tools none "Tell me a joke"
+
+# Tools work with any model that supports function calling
+llms -m gpt-4o --tools calc "Calculate the area of a circle with radius 5"
+```
+
+### Image Generation
+
+```bash
+# Generate image with default model
+llms --out image "A serene mountain landscape at sunset"
+
+# Generate with specific model by ID
+llms -m "gemini-2.5-flash-image" --out image "Logo for a tech startup"
+
+# Generate with specific model by name
+llms -m "Gemini 2.5 Flash Image" --out image "cat in a hat"
+
+# Images are saved to ~/.llms/cache with local path and HTTP URL
+```
+
+### Audio Generation
+
+```bash
+# Generate audio with default TTS model
+llms --out audio "Welcome to our podcast"
+
+# With specific TTS model
+llms -m gemini-2.5-pro-preview-tts --out audio "Merry Christmas"
+
+# Generate with Flash TTS
+llms -m gemini-2.5-flash-preview-tts --out audio "Hello world"
+
+# Audio files are saved to ~/.llms/cache with local path and HTTP URL
 ```
 
 ## Environment Variables
@@ -466,6 +663,7 @@ DEEPSEEK_API_KEY       # DeepSeek
 CHUTES_API_KEY         # chutes.ai OSS LLM and Image Models
 HF_TOKEN               # Hugging Face
 FIREWORKS_API_KEY      # fireworks.ai OSS Models
+CODESTRAL_API_KEY      # Codestral (Mistral)
 LMSTUDIO_API_KEY       # Placeholder for local LM Studio
 ```
 

@@ -9,29 +9,44 @@ Set the API keys for the providers you want to use:
 
 <ShellCommand>export OPENROUTER_API_KEY = "..."</ShellCommand>
 
-API Keys used for the default providers in [llms.json](https://github.com/ServiceStack/llms/blob/main/llms/llms.json):
+API Keys used for the providers enabled in [llms.json](https://github.com/ServiceStack/llms/blob/main/llms/llms.json):
 
-| Provider | Environment Variable | Description |
-|----------|---------------------|-------------|
-| openrouter_free | `OPENROUTER_API_KEY` | OpenRouter FREE models |
-| groq | `GROQ_API_KEY` | Groq API key |
-| google_free | `GOOGLE_FREE_API_KEY` | Google FREE API key |
-| codestral | `CODESTRAL_API_KEY` | Codestral API key |
-| ollama | N/A | No API key required |
-| openrouter | `OPENROUTER_API_KEY` | OpenRouter API key |
-| google | `GOOGLE_API_KEY` | Google API key |
-| anthropic | `ANTHROPIC_API_KEY` | Anthropic API key |
-| openai | `OPENAI_API_KEY` | OpenAI API key |
-| grok | `GROK_API_KEY` | Grok (X.AI) API key |
-| qwen | `DASHSCOPE_API_KEY` | Qwen (Alibaba) key |
-| z.ai | `ZAI_API_KEY` | Z.ai API key |
-| mistral | `MISTRAL_API_KEY` | Mistral API key |
+| Provider    | Environment Variable | Description |
+|-------------|---------------------|-------------|
+| openrouter  | `OPENROUTER_API_KEY` | OpenRouter |
+| google      | `GEMINI_API_KEY` | Gemini (Google) |
+| anthropic   | `ANTHROPIC_API_KEY` | Claude (Anthropic) |
+| openai      | `OPENAI_API_KEY` | OpenAI API key |
+| groq        | `GROQ_API_KEY` | Groq API key |
+| z.ai        | `ZAI_API_KEY` | Z.ai API key |
+| qwen        | `DASHSCOPE_API_KEY` | Qwen (Alibaba) key |
+| xai         | `GROK_API_KEY` | Grok (X.AI) API key |
+| nvidia      | `NVIDIA_API_KEY` | NVidia NIM API key |
+| github      | `GITHUB_TOKEN` | GitHub Copilot Models token |
+| mistral     | `MISTRAL_API_KEY` | Mistral API key |
+| deepseek    | `DEEPSEEK_API_KEY` | DeepSeek API key |
+| chutes      | `CHUTES_API_KEY` | chutes.ai OSS LLM and Image Models |
+| huggingface | `HF_TOKEN` | Hugging Face API token |
+| fireworks   | `FIREWORKS_API_KEY` | fireworks.ai OSS Models |
+| codestral   | `CODESTRAL_API_KEY` | Codestral API key |
+| lmstudio    | `LMSTUDIO_API_KEY` | Any API Key enables LM Studio |
+| ollama      | N/A | No API key required |
 
 ## 2. Start the Server
 
 Launch the web UI and API server:
 
 <ShellCommand>llms --serve 8000</ShellCommand>
+
+Start with verbose logging:
+
+```bash
+# Verbose logging
+llms --serve 8000 --verbose
+
+# Debug and Verbose logging
+DEBUG=1 llms --serve 8000 --verbose
+```
 
 This starts:
 - Web UI at `http://localhost:8000`
@@ -126,6 +141,8 @@ llms --check groq kimi-k2 llama4:400b
 ```
 
 This helps verify providers are configured correctly and shows their response times.
+
+See [CLI Docs](/docs/features/cli) for more details.
 
 ## Next Steps
 

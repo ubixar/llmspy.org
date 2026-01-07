@@ -1,0 +1,47 @@
+---
+title: Audio Generation
+description: Generate audio using various LLM providers
+---
+
+Audio generation is an emerging capability with limited provider support where Text-to-Speech generation through both the UI and CLI, currently only supports Google's latest TTS models:
+
+| Model | Description |
+|-------|-------------|
+| **Gemini 2.5 Flash Preview TTS** | Fast, lightweight TTS |
+| **Gemini 2.5 Pro Preview TTS** | High-quality TTS |
+
+Typically you'd select the audio generation model from the Model Selector to find models that supports audio generation:
+
+<Screenshot src="/img/model-selector-audio-output.webp"/>
+
+But despite models.dev listing them as capable of audio generation, only Gemini's TTS models are currently supported for audio generation through Gemini's API as Alibaba doesn't yet support the **audio** modality.
+
+<Screenshot src="/img/generate-audio.webp"/>
+
+### UI & Command-Line Usage
+
+Available in both the UI and on the command-line using `--out audio`:
+
+```bash
+llms --out audio "Merry Christmas"
+llms -m gemini-2.5-pro-preview-tts --out audio "Merry Christmas"
+```
+
+### Output
+
+Audio files are saved locally and accessible via HTTP URL:
+
+```
+Saved files:
+/Users/llmspy/.llms/cache/c2/c27b5fd43ebbdbca...acf118.wav
+http://localhost:8000/~cache/c2/c27b5fd43ebbdbca...acf118.wav
+```
+
+### Playback
+
+**From the command line:**
+```bash
+play /Users/llmspy/.llms/cache/c2/c27b5fd43ebbdbca...acf118.wav
+```
+
+<Info>📁 All generated audio files are saved to `~/.llms/cache` using their SHA-256 hash as the filename.</Info>

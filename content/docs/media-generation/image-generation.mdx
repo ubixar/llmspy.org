@@ -1,0 +1,53 @@
+---
+title: Image Generation
+description: Generate images using various LLM providers
+---
+
+Unlike text generation, there's no standard API for image generation across providers - each requires its own custom implementation. Despite the additional effort required, there's now seamless image generation support through both the UI and CLI with built-in integrations for:
+
+| Provider   | Status |
+|------------|--------|
+| Google     | ✅ Supported |
+| OpenAI     | ✅ Supported |
+| OpenRouter | ✅ Supported |
+| Chutes     | ✅ Supported |
+| Nvidia     | ✅ Supported |
+
+To begin select an image generation model from the Model Selector that supports image generation:
+
+<Screenshot src="/img/model-selector-image-output.webp"/>
+
+When an image generation model is selected, the chat prompt will the option to specify which aspect ratio to use for the generated images:
+
+<Screenshot src="/img/generate-image.webp"/>
+
+### Command-Line Usage
+
+Generate images using the `--out image` modifier:
+
+```bash
+llms --out image "cat in a hat"
+```
+
+Which uses the `out:image` chat template in `llms.json` for its image generation request. Before returning, any assets are saved to cache and their local path and HTTP URL returned, e.g:
+
+**Output:**
+
+```
+Here is a cat in a hat for you! 
+
+Saved files:
+/home/mythz/.llms/cache/c9/c9b2fd2a1d95708251...5d3f467a.png
+http://localhost:8000/~cache/c9/c9b2fd2a1d95708251...5d3f467a.png
+```
+
+### Specify a Model
+
+Use any model that supports image generation by specifying its **ID** or **name**:
+
+```bash
+llms -m "gemini-2.5-flash-image" --out image "cat in a hat"
+llms -m "Gemini 2.5 Flash Image" --out image "cat in a hat"
+```
+
+<Info>📁 All generated images are saved to `~/.llms/cache` using their SHA-256 hash as the filename.</Info>

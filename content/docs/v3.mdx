@@ -11,7 +11,7 @@ description: Major release focused on extensibility, expanded provider support, 
 | **Model Selector** | Redesigned full-featured dialog with search, filtering, sorting, and favorites |
 | **Extensions** | Add features, providers, and customize the UI with a flexible plugin architecture |
 | **Tool Support** | First-class Python function calling for LLM interactions with your local environment |
-| **KaTeX Support** | Support for beautiful rendering of LaTeX math expressions |
+| **KaTeX Math Typesetting** | Support for beautiful rendering of LaTeX math expressions |
 | **Calculator UI** | Beautiful UX Friendly UI to evaluate python math expressions |
 | **Run Code UI** | Execute Python, JS, TypeScript and C# code scripts in a CodeMirror editor |
 | **Image Generation** | Built-in support for Google, OpenAI, OpenRouter, Chutes, and Nvidia |
@@ -24,17 +24,36 @@ description: Major release focused on extensibility, expanded provider support, 
 
 ## Table of Contents
 
-- [Rewritten for Extensibility](#rewritten-for-extensibility)
-- [New Provider Configuration Model](#new-provider-configuration-model)
 - [New Model Selector UI](#new-model-selector-ui)
+- [Rewritten for Extensibility](#rewritten-for-extensibility)
 - [Extensions System](#extensions-system)
 - [Tool Support](#tool-support)
-- [Available Tools](#available-tools)
+- [Core Tools](#core-tools)
+- [Calculator UI](#calculator-ui)
+- [Run Code UI](#run-code-ui)
+- [KaTeX Math Typesetting](#katex-math-typesetting)
 - [Image Generation Support](#image-generation-support)
 - [Audio Generation Support](#audio-generation-support)
+- [Media Gallery](#media-gallery)
+- [System Prompts Library](#system-prompts-library)
+- [Server-Side SQLite Storage](#server-sqlite-and-cached-file-storage-persistence)
 - [Image Cache & Optimization](#image-cache--optimization)
-- [Enhancements & Fixes](#enhancements--fixes)
-- [v3 Configuration Migration](#v3-configuration-migration)
+- [CLI - More Powerful Than Ever](#cli---more-powerful-than-ever)
+- [Upgrade Instructions](#upgrade-instructions)
+
+---
+
+## Install
+
+Get instant access to 530+ models from 23 providers with extensibility at its core:
+
+<ShellCommand>pip install llms</ShellCommand>
+
+### Upgrade
+
+<ShellCommand>pip install --upgrade llms</ShellCommand>
+
+See [Install Docs](/docs/getting-started/installation) for running from Docker or source.
 
 ---
 
@@ -404,9 +423,19 @@ As some core tools are particularly useful on their own, dedicated UIs has been 
 
 <Screenshot src="/img/run-calc.webp"/>
 
+- **🖥️ UX Friendly Interface** - Clean, modern, responsive UI with dark mode support
+- **💾 Persistent History** - Calculations automatically saved to localStorage and preserved between sessions
+- **⚡ 1-Click Interaction** - Click history items to instantly load expressions and copy to clipboard
+- **⌨️ Keyboard-Free Access** - Complete UI buttons for numbers, operators, constants, and math functions
+- **🐍 Python Math Support** - Full access to Python's math library including trig, stats, and more
+- **🛡️ Safe Evaluation** - AST-based evaluator prevents arbitrary code execution for secure calculations
+
+
 ## Run Code UI
 
 Whilst the `run_python` tools provides a scratch pad for running stand-alone Python, JavaScript, TypeScript, and C# code in a sandbox.
+
+The UI uses **CodeMirror** as the code editor, providing a better user experience with syntax highlighting, code completion, and other IDE-like features for writing code.
 
 ## Run Python, JavaScript, TypeScript & C# programs
 
@@ -417,11 +446,15 @@ Whilst the `run_python` tools provides a scratch pad for running stand-alone Pyt
     'Run C#': '/img/run-csharp.webp',
 }} />
 
+The UI uses **CodeMirror** as the code editor, providing a better user experience with syntax highlighting, code completion, and other IDE-like features for writing code.
+
 <Info>As both dedicated UIs run the tools directly, they don't use AI or consume any tokens</Info>
+
+See the [Run Code UI](/docs/features/run-code-ui) docs for more details.
 
 ---
 
-## KaTeX Extension
+## KaTeX Math Typesetting
 
 The [katex](https://github.com/ServiceStack/llms/tree/main/llms/extensions/katex) extension enables beautiful rendering of LaTeX math expressions in AI responses using [KaTeX](https://katex.org/). It integrates automatically with the markdown parser to render math equations in both inline and block formats.
 
@@ -441,7 +474,7 @@ The [katex](https://github.com/ServiceStack/llms/tree/main/llms/extensions/katex
 
 ## Image Generation Support
 
-v3 includes built-in support for image generation models on:
+Unlike text generation, there's no standard API for image generation across providers - each requires its own custom implementation. Despite the additional effort required, there's now seamless image generation support through both the UI and CLI with built-in integrations for:
 
 | Provider   | Status |
 |------------|--------|
@@ -451,9 +484,13 @@ v3 includes built-in support for image generation models on:
 | Chutes     | ✅ Supported |
 | Nvidia     | ✅ Supported |
 
-<Screenshot src="/img/generate-image.webp"/>
+To begin select an image generation model from the Model Selector that supports image generation:
 
-<Info>As there's no standard to generate images, this required a custom implementation for each provider</Info>
+<Screenshot src="/img/model-selector-image-output.webp"/>
+
+When an image generation model is selected, the chat prompt will the option to specify which aspect ratio to use for the generated images:
+
+<Screenshot src="/img/generate-image.webp"/>
 
 ### Command-Line Usage
 
@@ -488,12 +525,18 @@ llms -m "Gemini 2.5 Flash Image" --out image "cat in a hat"
 
 ## Audio Generation Support
 
-v3 includes built-in support for audio generation with Google's new Text-to-Speech models:
+Audio generation is an emerging capability with limited provider support where Text-to-Speech generation through both the UI and CLI, currently only supports Google's latest TTS models:
 
 | Model | Description |
 |-------|-------------|
 | **Gemini 2.5 Flash Preview TTS** | Fast, lightweight TTS |
 | **Gemini 2.5 Pro Preview TTS** | High-quality TTS |
+
+Typically you'd select the audio generation model from the Model Selector to find models that supports audio generation:
+
+<Screenshot src="/img/model-selector-audio-output.webp"/>
+
+But despite models.dev listing them as capable of audio generation, only Gemini's TTS models are currently supported for audio generation through Gemini's API as Alibaba doesn't yet support the **audio** modality.
 
 <Screenshot src="/img/generate-audio.webp"/>
 
@@ -543,6 +586,10 @@ Dedicated UIs are available for quickly browsing and navigating or generated ima
 #### Landscape Images
 
 <Screenshot src="/img/gallery-landscape.webp" />
+
+#### Audio Generations
+
+<Screenshot src="/img/gallery-audio.webp" />
 
 ---
 
@@ -601,6 +648,127 @@ Now that all persistence is server-side, to transfer or backup your configuratio
 
 ---
 
+## CLI - more Powerful than Ever
+
+All server extension features including tools, custom providers, database persistence, and image/audio generation are fully accessible via the command line, making llms.py a powerful terminal-based AI assistant.
+
+### Core CLI Usage
+
+```bash
+# One-shot query
+llms "What is the capital of France?"
+
+# Specify model by ID or name
+llms -m claude-opus-45 "Explain quantum computing"
+llms -m "Claude Opus 4.5" "Write a Python function"
+```
+
+### Tools & Function Calling
+
+All registered tools are automatically available in CLI mode. Enable specific tools with the `--tools` flag:
+
+```bash
+# Use all available tools by default (`--tools all`)
+llms "Read the file data.txt and calculate the sum"
+
+# Use specific tools
+llms --tools calc,get_current_time "What time is it in Tokyo and what's 15% of 230?"
+
+# Don't use any tools
+llms --tools none "Tell me a joke"
+```
+
+### Extensions Management
+
+```bash
+# List available extensions from github.com/llmspy
+llms --add
+
+# Install an extension
+llms --add duckduckgo
+
+# Install a 3rd-party extension from GitHub
+llms --add github-user/repo-name
+
+# List installed extensions
+llms --remove
+
+# Uninstall an extension
+llms --remove duckduckgo
+```
+
+### Provider Management
+
+```bash
+# List all enabled providers and models
+llms ls
+
+# List available models from a specific provider
+llms ls google
+
+# Enable a provider
+llms --enable google
+
+# Disable a provider
+llms --disable google
+
+# Update provider definitions from models.dev (automatically updated daily)
+llms --update-providers
+```
+
+### Image Analysis, Audio Transcribing & Documents Processing
+
+```bash
+# Image Analysis
+llms --image https://example.com/chart.jpg "Analyze this chart"
+
+# Audio Processing
+llms -m gpt-4o-audio-preview --audio interview.mp3 "Transcribe this interview"
+
+# Document Processing
+llms -m gpt-5 --file report.pdf "Extract action items"
+```
+
+### Media Generation
+
+Generate images and audio directly from the command line:
+
+```bash
+# Generate images
+llms --out image "A serene mountain landscape at sunset"
+llms -m "gemini-2.5-flash-image" --out image "Logo for a tech startup"
+
+# Generate audio
+llms --out audio "Welcome to our podcast"
+llms -m gemini-2.5-pro-preview-tts --out audio "Hello world"
+```
+
+All generated media is automatically saved to `~/.llms/cache` with metadata persisted in SQLite.
+
+### Database Persistence
+
+All CLI interactions are automatically persisted to `~/.llms/user/app/app.sqlite`, including:
+
+- Chat threads and messages
+- Tool calls and results
+- Generated assets and file references
+- User preferences and settings
+
+Ensuring your conversation history is preserved and accessible from both CLI and Web UI.
+
+### Server Mode
+
+Launch the web UI while keeping full CLI access:
+
+```bash
+# Start UI and Chat Completion API on port 8000
+llms --serve 8000
+```
+
+See [CLI Docs](/docs/features/cli) for more details.
+
+---
+
 ## Upgrade Instructions
 
 ```bash
@@ -617,8 +785,8 @@ llms --serve 8000
 
 ## Building a Community Extension Ecosystem
 
-With llms.py rebuilt from the ground up as an extensible platform, we hope to foster a thriving community extension ecosystem where developers can share innovative solutions and extend llms.py in ways we haven't yet imagined. 
+With llms .py rebuilt from the ground up as an extensible platform, we hope to foster a thriving community extension ecosystem where developers can share innovative solutions and extend llms.py in ways we haven't yet imagined. 
 
-As llms.py is still in active development, we welcome [your feedback](https://github.com/ServiceStack/llms/discussions) on any features that would better support 3rd party extensions and help cultivate this growing community.
+As llms .py is still in active development, we welcome [your feedback](https://github.com/ServiceStack/llms/discussions) on any features that would better support 3rd party extensions and help cultivate this growing community.
 
 ---

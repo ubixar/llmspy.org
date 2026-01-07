@@ -6,6 +6,8 @@
     "web-ui",
     "analytics",
     "core-tools",
+    "calculator-ui",
+    "run-code-ui",
     "katex",
     "model-selector",
     "system-prompts"
