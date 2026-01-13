@@ -264,7 +264,7 @@ export default function HomePage() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white">
             <Image
               src="/img/model-selector.webp"
               alt="Model Selector with search and filtering"
@@ -293,7 +293,7 @@ export default function HomePage() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 mb-8">
+          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white mb-8">
             <Image
               src="/img/gemini-filestores-upload-folder.webp"
               alt="Document Upload with Categories"
@@ -303,7 +303,7 @@ export default function HomePage() {
             />
           </div>
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/gemini-filestores.webp"
                 alt="Filestore Management"
@@ -312,7 +312,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/gemini-sync.webp"
                 alt="Bidirectional Sync"
@@ -323,7 +323,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/gemini-search-all.webp"
                 alt="Search All Documents"
@@ -332,7 +332,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/gemini-search-category.webp"
                 alt="Search by Category"
@@ -341,7 +341,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/gemini-search-document.webp"
                 alt="Gemini RAG chat with document context"
@@ -372,7 +372,7 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/llms-tools-page.webp"
                 alt="Tools Page"
@@ -381,7 +381,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/llms-tools-top.webp"
                 alt="Tool Selector UI"
@@ -392,7 +392,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/tool-files.webp"
                 alt="File System Tools"
@@ -401,7 +401,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/llms-tools-get_current_time.webp"
                 alt="Time Tools"
@@ -410,7 +410,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/llm-tool-call.webp"
                 alt="Tool Call Example"
@@ -421,7 +421,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 max-h-[500px]">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
                 src="/img/tool-python.webp"
                 alt="Python Code Execution Tool"
@@ -430,7 +430,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 max-h-[500px]">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
                 src="/img/tool-javascript.webp"
                 alt="JavaScript Code Execution Tool"
@@ -439,7 +439,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 max-h-[500px]">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
                 src="/img/tool-csharp.webp"
                 alt="C# Code Execution Tool"
@@ -469,7 +469,7 @@ export default function HomePage() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white">
             <Image
               src="/img/run-calc.webp"
               alt="Calculator UI with Python math support"
@@ -543,7 +543,7 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/rendering-katex.webp"
                 alt="Popular math expressions"
@@ -552,7 +552,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/rendering-katex2.webp"
                 alt="Basic math expressions"
@@ -591,7 +591,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/generate-image.webp"
                 alt="Image Generation with aspect ratio selection"
@@ -600,7 +600,7 @@ export default function HomePage() {
                 className="w-full h-auto"
               />
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
                 src="/img/generate-audio.webp"
                 alt="Audio Generation with TTS"
@@ -631,7 +631,7 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="space-y-6">
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <Image
                 src="/img/gallery-portrait.webp"
                 alt="Portrait Images Gallery"
@@ -641,7 +641,7 @@ export default function HomePage() {
               />
             </div>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+              <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
                 <Image
                   src="/img/gallery-square.webp"
                   alt="Square Images Gallery"
@@ -650,7 +650,7 @@ export default function HomePage() {
                   className="w-full h-auto"
                 />
               </div>
-              <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+              <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
                 <Image
                   src="/img/gallery-landscape.webp"
                   alt="Landscape Images Gallery"
@@ -660,7 +660,7 @@ export default function HomePage() {
                 />
               </div>
             </div>
-            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <Image
                 src="/img/gallery-audio.webp"
                 alt="Audio Generations Gallery"
@@ -690,7 +690,7 @@ export default function HomePage() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white">
             <Image
               src="/img/llms-system-prompt.webp"
               alt="System Prompts Library"
@@ -719,7 +719,7 @@ export default function HomePage() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+          <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white">
             <Image
               src="/img/model-selector-providers.webp"
               alt="Provider management interface"
