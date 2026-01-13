@@ -6,6 +6,7 @@
     "server",
     "ui",
     "tools",
-    "core-tools"
+    "core-tools",
+    "gemini"
   ]
 }

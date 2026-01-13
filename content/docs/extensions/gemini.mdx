@@ -1,0 +1,191 @@
+---
+title: Gemini File Search Stores
+description: Manage Google Gemini File Search Stores with automatic document uploads, organization, and synchronization for RAG workflows.
+---
+
+A complete solution for managing Gemini's [File Search Stores](https://ai.google.dev/api/file-search), enabling **RAG (Retrieval Augmented Generation)** workflows with automatic document uploads, category organization, and bidirectional sync between your local database and Gemini's cloud storage.
+
+Build up your own knowledge base in File Stores, optionally organized into categories, that you can query to ground your AI chats with your own data - whether that's searching across a single document, a category of related documents, or your entire filestore.
+
+Here's an example of querying the single [v3 Release Notes](/docs/v3) document for its best features:
+
+<Screenshot src="/img/gemini-search-document.webp" />
+
+## Install
+
+Install the **gemini** extension via the CLI:
+
+<ShellCommand>llms --add gemini</ShellCommand>
+
+#### Required
+
+To use this extension, you must configure your Gemini API key.
+
+1.  Obtain an API key from [Google AI Studio](https://aistudio.google.com/).
+2.  Add it to your environment variables or `.env` file:
+
+```bash
+GEMINI_API_KEY=your_api_key_here
+```
+
+## Features
+
+- **Filestore Management**: Create and manage isolated stores of documents for different projects or knowledge bases.
+- **Drag & Drop Uploads**: Easily upload documents (PDF, Text, Markdown, etc.) by dragging them into the UI or clicking on it to open the File picker.
+- **Smart Categorization**: Organize documents into categories (folders) for granular retrieval.
+- **Contextual RAG Chat**:
+    - **Ask Filestore**: Chat with the entire knowledge base of a filestore.
+    - **Ask Category**: Focus your chat on a specific category within a filestore.
+    - **Ask Document**: Chat with a single specific document.
+- **Bi-Directional Sync**: The "Sync Store" feature reconciles your local database with the remote Gemini File API, ensuring consistency. 
+
+## Usage
+
+From your home page you can click the **Chat** icon to start a RAG chat session against all documents in your filestore. Or click the filestore list item to open it and manage documents.
+
+<Screenshot src="/img/gemini-filestores.webp" />
+
+### 1. Creating a Filestore
+
+First step is to create a Filestore to hold your documents. Navigate to the Gemini extension page and click **New Store**. Give it a descriptive name (e.g., "Project Documentation"). This creates a logical container in the Gemini Filestore Search API.
+
+<Screenshot src="/img/gemini-filestores-create.webp" />
+
+### macOS Performance
+
+⚠️ For a yet unknown reason, Gemini filestore operations takes seconds on our Linux systems, but can take up to several minutes on our macOS desktops (on same network). 
+The Create/Delete Filestore operations are synchronous and block the UI and server until completed, but once created document uploads are asynchronous and run by a Background Worker DB Queue without blocking the UI.
+
+## Filestore UI
+
+Once you've created a Filestore, clicking on it opens the Filestore management interface where you can upload, organize, and interact with your documents.
+
+<Screenshot src="/img/gemini-filestores-new.webp" />
+
+#### Summary
+Displays aggregate statistics about the filestore including total document count and storage size. 
+The **New Chat** button or the **Chat Icon** next to **All Documents** lets you quickly start a conversation using all documents as context.
+
+#### Documents Section
+- **New Category**: Type a category name and click the folder icon to create a new organizational folder before uploading
+- **Upload Zone**: Drag and drop files or click to open the file picker. Supports PDFs, Text files, and Markdown documents
+- **Search**: Filter documents by name
+- **Sort**: Order documents by "Newest First" or other criteria
+
+#### Store Management
+- **Sync Store**: Reconciles your local database with Gemini's remote storage to detect and resolve any discrepancies
+- **Delete Store**: Permanently removes the filestore and all its documents from both local storage and Gemini's servers
+
+### 2. Uploading Documents
+
+You can drag and drop files directly onto the drop zone or click the file icon to select files.
+
+<Screenshot src="/img/gemini-filestores-upload-single.webp" />
+
+When uploading, the UI will order the documents by **Uploading** where it shows the progress of the current document being uploaded first, followed by documents yet to be uploaded.
+
+- **Supported Formats**: Text, Markdown, PDF, and other text-based formats.
+- **Categories**: You can type a category name (e.g., "API Docs") in the input field before uploading to automatically organize files.
+
+<Screenshot src="/img/gemini-filestores-upload-folder.webp" />
+
+### 3. Chatting with Data
+Once your documents are uploaded and processed (status shows as "Active"), you can start a RAG chat:
+- Click the **Chat Icon** next to the Filestore name in the list to chat all documents in the store.
+- Inside a Filestore, click the **Chat Icon** on a specific Category to limit the context to that folder.
+- Click the **Chat Icon** on an individual document to ask questions about that specific file only.
+
+## Query All Documents in the Store
+
+Each RAG Session starts a new Chat configured with a **Gemini Model** and the `file_search` tool pre-configured to use the selected filestore, category, or document, as visually indicated by the header labels.
+
+<Screenshot src="/img/gemini-search-all.webp" />
+
+The bottom of the Chat session shows the grounded sources used to answer your query.
+
+You can expand the sources section to see which documents were used to answer your query.
+
+<Screenshot src="/img/gemini-search-all-expanded.webp" />
+
+As sources contain incomplete fragments of your documents, they may not render perfectly in the UI. If needed you can click the filename to download the full original document for reference.
+
+## Query only Documents in a Category
+
+When querying a specific category, the extension automatically constructs the `file_search` tool call with the appropriate `metadata_filter` to limit the query to that category of documents.
+
+<Screenshot src="/img/gemini-search-category.webp" />
+
+## Query a Single Document
+
+Simarly, when querying a specific document, the extension constructs the `file_search` tool call with the appropriate `metadata_filter` to limit the query to that single document.
+
+<Screenshot src="/img/gemini-search-document.webp" />
+
+### 4. Syncing
+If you suspect your local data is out of sync with Gemini (e.g., after manual deletion in AI Studio or network interruptions), click the **Sync Store** button.
+- The sync report will show any discrepancies.
+- It will automatically attempt to repair issues where possible (e.g., updating local metadata).
+- It highlights files that are missing locally or remotely.
+
+<Screenshot src="/img/gemini-sync.webp" />
+
+
+## Configuration
+
+
+#### Optional
+
+```bash
+# Override MIME types for specific file extensions (comma-separated)
+# Format: extension:mime/type,extension:mime/type
+GEMINI_UPLOAD_MIME_TYPES="mdx:text/markdown,cshtml:text/html"
+```
+
+Although Gemini Filestore docs indicate support for a [wide range of MIME types](https://ai.google.dev/gemini-api/docs/file-search#application), in practice many aren't detected or supported correctly. If you encounter an error with automatic detection or find that a particular MIME type isn't supported, you can use this variable to override the MIME type for specific file extensions during upload to ensure proper indexing and searchability.
+
+### Database Storage
+The extension automatically creates a SQLite database at:
+```
+.llms/user/default/gemini/gemini.sqlite
+```
+
+### File Cache
+Uploaded files are stored in the cache directory with SHA-256 hash-based filenames:
+```
+~/.llms/cache/[hash_prefix]/[hash].[ext]
+~/.llms/cache/[hash_prefix]/[hash].info.json
+```
+
+## Key Features
+
+### Intelligent Document Management
+- **Automatic Deduplication**: SHA-256 hash-based duplicate detection prevents redundant uploads
+- **Category Organization**: Organize documents into logical categories for better management
+- **Custom Metadata**: Track documents with ID, hash, and category metadata
+- **State Tracking**: Monitor document states (PENDING, ACTIVE, FAILED) throughout their lifecycle
+
+### Background Upload Worker
+- **Asynchronous Processing**: Automatically processes pending uploads in the background
+- **Auto-start on Upload**: Worker automatically starts when new documents are uploaded
+- **Startup Processing**: Processes any pending uploads from previous sessions on extension startup
+- **Batch Processing**: Efficiently handles multiple documents in batches of 10
+- **Automatic Metadata Updates**: Keeps filestore statistics up-to-date after uploads complete
+
+### Smart Synchronization
+- **Bidirectional Sync**: Identify documents missing from local or remote stores
+- **Metadata Validation**: Detect and fix metadata mismatches between local and remote
+- **Duplicate Detection**: Find and flag duplicate documents in remote stores
+- **State Management**: Automatically update document states based on sync results
+- **Detailed Reporting**: Comprehensive sync reports with counts and sample documents
+
+### Custom MIME Type Support
+- **Configurable Types**: Override MIME types for specific file extensions via environment variable
+- **Markdown Extensions**: Pre-configured support for mdx, l, ss, sc extensions as text/markdown
+- **Upload Optimization**: Ensures correct MIME types for better search indexing
+
+### Robust Error Handling
+- **Comprehensive Logging**: Track all operations with detailed debug information
+- **Error Recovery**: Gracefully handle failures and store error messages for review
+- **Retry Capability**: Manual retry endpoint for failed uploads
+- **ClientError Handling**: Proper handling of 404s and other Gemini API errors
+
