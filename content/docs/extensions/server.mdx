@@ -294,7 +294,7 @@ When creating a server extension, you work with an `ExtensionContext` instance t
 ```python
 def init(ctx: ExtensionContext):
     # Your extension initialization code here
-    ctx.register_tool(my_tool_function)
+    ctx.register_tool(my_tool_function, group="my_tools")
     ctx.add_get("status", handle_status)
 ```
 
@@ -542,7 +542,8 @@ ctx.register_shutdown_handler(cleanup)
 
 ### Tool Registration
 
-#### `register_tool(func: Callable, tool_def: Optional[Dict] = None, group: Optional[str] = None)`
+#### `register_tool(func:Callable, tool_def:Optional[Dict]=None, group:Optional[str]=None)`
+
 Register a tool function that LLMs can invoke.
 
 ```python
@@ -579,7 +580,12 @@ Process a tool definition to inline `$defs` references.
 
 ### Tool Execution
 
-#### `async exec_tool(name: str, args: Dict[str, Any]) -> Tuple[Optional[str], List[Dict[str, Any]]]`
+
+```python
+async exec_tool(name: str, args: Dict[str, Any])
+    -> Tuple[Optional[str], List[Dict[str, Any]]]
+```
+
 Execute a registered tool by name.
 
 ```python
@@ -590,10 +596,23 @@ The `text` captures the tool text response that can be embedded in AI Messages a
 
 The `resources` contains a list of artifacts extracted from the tool results in the same structure as [Open AI content types](https://platform.openai.com/docs/api-reference/chat/create#chat_create-messages-user_message-content).
 
-#### `tool_result(result: Any, function_name: Optional[str] = None, function_args: Optional[Dict] = None) -> Dict[str, Any]`
+```python
+tool_result(result: Any, 
+    function_name: Optional[str] = None, 
+    function_args: Optional[Dict] = None)
+     -> Dict[str, Any]
+```
+
 Format a tool execution result for return to the LLM.
 
-#### `tool_result_part(result: Dict, function_name: Optional[str] = None, function_args: Optional[Dict] = None) -> Dict[str, Any]`
+
+```python
+tool_result_part(result: Dict, 
+    function_name: Optional[str] = None, 
+    function_args: Optional[Dict] = None)
+    -> Dict[str, Any]
+```
+
 Format a partial tool result.
 
 #### `to_content(result: Any) -> str`
@@ -603,7 +622,15 @@ Convert a result to string content.
 
 ### Chat Utilities
 
-#### `chat_request(template: Optional[str] = None, text: Optional[str] = None, model: Optional[str] = None, system_prompt: Optional[str] = None) -> Dict[str, Any]`
+```python
+chat_request(
+    template: Optional[str] = None, 
+    text: Optional[str] = None, 
+    model: Optional[str] = None, 
+    system_prompt: Optional[str] = None) 
+    -> Dict[str, Any]
+```
+
 Create a chat request object.
 
 ```python
@@ -666,7 +693,11 @@ data = ctx.json_from_file("/path/to/config.json")
 #### `download_file(url: str) -> Tuple[bytes, Dict[str, Any]]`
 Download a file from a URL. Returns bytes and metadata.
 
-#### `session_download_file(session: aiohttp.ClientSession, url: str) -> Tuple[bytes, Dict[str, Any]]`
+```python
+session_download_file(session: aiohttp.ClientSession, url: str) 
+    -> Tuple[bytes, Dict[str, Any]]
+```
+
 Download a file using an existing aiohttp session.
 
 #### `read_binary_file(url: str) -> Tuple[bytes, Dict[str, Any]]`
@@ -683,14 +714,29 @@ Get the full path to a cache location.
 cache_file = ctx.get_cache_path("my_extension/data.json")
 ```
 
-#### `save_image_to_cache(base64_data: Union[str, bytes], filename: str, image_info: Dict[str, Any], ignore_info: bool = False) -> Tuple[str, Optional[Dict[str, Any]]]`
+```python
+save_image_to_cache(
+    base64_data: Union[str, bytes], 
+    filename: str, 
+    image_info: Dict[str, Any], 
+    ignore_info: bool = False) 
+    -> Tuple[str, Optional[Dict[str, Any]]]
+```
+
 Save image data to the cache. Returns the cache path and info.
 
 ```python
 path, info = ctx.save_image_to_cache(b64_data, "output.png", {"prompt": "..."})
 ```
 
-#### `save_bytes_to_cache(bytes_data: Union[str, bytes], filename: str, file_info: Optional[Dict[str, Any]]) -> Tuple[str, Optional[Dict[str, Any]]]`
+```python
+save_bytes_to_cache(
+    bytes_data: Union[str, bytes], 
+    filename: str, 
+    file_info: Optional[Dict[str, Any]]) 
+    -> Tuple[str, Optional[Dict[str, Any]]]
+```
+
 Save binary data to the cache.
 
 #### `cache_message_inline_data(message: Dict[str, Any])`
@@ -785,7 +831,14 @@ Get the MIME type for a filename.
 mime = ctx.get_file_mime_type("image.png")  # "image/png"
 ```
 
-#### `to_file_info(chat: Dict[str, Any], info: Optional[Dict] = None, response: Optional[Dict] = None) -> Dict[str, Any]`
+```python
+to_file_info(
+    chat: Dict[str, Any], 
+    info: Optional[Dict] = None, 
+    response: Optional[Dict] = None) 
+    -> Dict[str, Any]
+```
+
 Create file info metadata from chat/response data.
 
 #### `group_resources(resources: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]`
