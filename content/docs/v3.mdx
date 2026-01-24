@@ -315,7 +315,7 @@ llms --add gemini
 
 After which you'll be able to click the **Gemini Icon** to open the Gemini extension page from the sidebar to manage your filestores.
 
-<Screenshot src="/img/gemini-filestores.webp" />
+<Screenshot src="/img/gemini/gemini-filestores.webp" />
 
 ### Key Features
 
@@ -332,7 +332,7 @@ After which you'll be able to click the **Gemini Icon** to open the Gemini exten
 
 Documents can be uploaded by dragging and dropping files onto the upload zone or clicking to open the file picker. You can organize uploads into category folders by typing a category name before uploading.
 
-<Screenshot src="/img/gemini-filestores-upload-folder.webp" />
+<Screenshot src="/img/gemini/gemini-filestores-upload-folder.webp" />
 
 Uploads are processed asynchronously by a **Background Worker** utilizing a **DB Queue**, so you can continue working while documents are indexed. The worker automatically starts when new documents are uploaded and efficiently handles batch processing without blocking the UI.
 
@@ -340,7 +340,7 @@ Uploads are processed asynchronously by a **Background Worker** utilizing a **DB
 
 Once documents are uploaded, you can start contextual RAG chat sessions with your data. Each session is pre-configured with a Gemini Model and the `file_search` tool to query your selected filestore, category, or document - as shown in the **meta example** below querying this very **v3** document for its best features:
 
-<Screenshot src="/img/gemini-search-document.webp" />
+<Screenshot src="/img/gemini/gemini-search-document.webp" />
 
 The grounded sources used to answer your query are displayed at the bottom of each chat response, allowing you to verify and explore the source documents.
 
@@ -450,7 +450,7 @@ llms --add fast_mcp
 
 <ScreenshotsGallery className="mb-8" gridClass="grid grid-cols-1 md:grid-cols-2 gap-4" images={{
     'MCP Servers': '/img/mcp-servers.webp',
-    'Gemini Image via MCP': '/img/tools-chat-gemini-image.webp',
+    'Gemini Image via MCP': '/img/tools/tools-chat-gemini-image.webp',
 }} />
 
 ### Configuration
@@ -487,15 +487,15 @@ Add, edit, or remove MCP servers directly from the UI:
 MCP tools can be executed directly from the Tools page or invoked by LLMs during chat sessions:
 
 <ScreenshotsGallery className="mb-8" gridClass="grid grid-cols-1 md:grid-cols-2 gap-4" images={{
-    'Execute Tool': '/img/tools-exec.webp',
-    'Tool Results': '/img/tools-exec-results.webp',
+    'Execute Tool': '/img/tools/tools-exec.webp',
+    'Tool Results': '/img/tools/tools-exec-results.webp',
 }} />
 
 ### HTML Results
 
 Tool outputs containing HTML content are rendered within a sandboxed iframe, letting you interact with rich content and even play games:
 
-<Screenshot src="/img/tools-chat-tetris.webp" />
+<Screenshot src="/img/tools/tools-chat-tetris.webp" />
 
 See the [MCP Support](/docs/extensions/fast_mcp) docs for complete configuration and usage details.
 
@@ -519,7 +519,7 @@ All file system operations are restricted to the current working directory for s
 * `list_directory` - List directory contents including file names, sizes, and modification times.
 * `glob_paths` - Find files and directories matching a glob pattern.
 
-<Screenshot src="/img/tool-files.webp" />
+<Screenshot src="/img/tools/tool-files.webp" />
 
 ### Utilities
 
@@ -543,16 +543,16 @@ LLMS includes a suite of tools for executing code in various languages within a 
 * `run_javascript(code)` - Executes JavaScript code (uses `bun` or `node`).
 
 <ScreenshotsGallery className="mb-8" gridClass="grid grid-cols-1 md:grid-cols-2 gap-4" images={{
-    'Run Python': '/img/tool-python.webp',
-    'Run JavaScript': '/img/tool-javascript.webp',
+    'Run Python': '/img/tools/tool-python.webp',
+    'Run JavaScript': '/img/tools/tool-javascript.webp',
 }} />
 
 * `run_typescript(code)` - Executes TypeScript code (uses `bun` or `node`).
 * `run_csharp(code)` - Executes C# code (uses `dotnet run` with .NET 10+ single-file support).
 
 <ScreenshotsGallery className="mb-8" gridClass="grid grid-cols-1 md:grid-cols-2 gap-4" images={{
-    'Run TypeScript': '/img/tool-typescript.webp',
-    'Run C#': '/img/tool-csharp.webp',
+    'Run TypeScript': '/img/tools/tool-typescript.webp',
+    'Run C#': '/img/tools/tool-csharp.webp',
 }} />
 
 ## Calculator UI

@@ -9,7 +9,7 @@ Build up your own knowledge base in File Stores, optionally organized into categ
 
 Here's an example of querying the single [v3 Release Notes](/docs/v3) document for its best features:
 
-<Screenshot src="/img/gemini-search-document.webp" />
+<Screenshot src="/img/gemini/gemini-search-document.webp" />
 
 ## Install
 
@@ -43,13 +43,13 @@ GEMINI_API_KEY=your_api_key_here
 
 From your home page you can click the **Chat** icon to start a RAG chat session against all documents in your filestore. Or click the filestore list item to open it and manage documents.
 
-<Screenshot src="/img/gemini-filestores.webp" />
+<Screenshot src="/img/gemini/gemini-filestores.webp" />
 
 ### 1. Creating a Filestore
 
 First step is to create a Filestore to hold your documents. Navigate to the Gemini extension page and click **New Store**. Give it a descriptive name (e.g., "Project Documentation"). This creates a logical container in the Gemini Filestore Search API.
 
-<Screenshot src="/img/gemini-filestores-create.webp" />
+<Screenshot src="/img/gemini/gemini-filestores-create.webp" />
 
 ### macOS Slow Performance
 
@@ -59,7 +59,7 @@ First step is to create a Filestore to hold your documents. Navigate to the Gemi
 
 Once you've created a Filestore, clicking on it opens the Filestore management interface where you can upload, organize, and interact with your documents.
 
-<Screenshot src="/img/gemini-filestores-new.webp" />
+<Screenshot src="/img/gemini/gemini-filestores-new.webp" />
 
 #### Summary
 Displays aggregate statistics about the filestore including total document count and storage size. 
@@ -79,14 +79,14 @@ The **New Chat** button or the **Chat Icon** next to **All Documents** lets you 
 
 You can drag and drop files directly onto the drop zone or click the file icon to select files.
 
-<Screenshot src="/img/gemini-filestores-upload-single.webp" />
+<Screenshot src="/img/gemini/gemini-filestores-upload-single.webp" />
 
 When uploading, the UI will order the documents by **Uploading** where it shows the progress of the current document being uploaded first, followed by documents yet to be uploaded.
 
 - **Supported Formats**: Text, Markdown, PDF, and other text-based formats.
 - **Categories**: You can type a category name (e.g., "API Docs") in the input field before uploading to automatically organize files.
 
-<Screenshot src="/img/gemini-filestores-upload-folder.webp" />
+<Screenshot src="/img/gemini/gemini-filestores-upload-folder.webp" />
 
 ### 3. Chatting with Data
 Once your documents are uploaded and processed (status shows as "Active"), you can start a RAG chat:
@@ -98,13 +98,13 @@ Once your documents are uploaded and processed (status shows as "Active"), you c
 
 Each RAG Session starts a new Chat configured with a **Gemini Model** and the `file_search` tool pre-configured to use the selected filestore, category, or document, as visually indicated by the header labels.
 
-<Screenshot src="/img/gemini-search-all.webp" />
+<Screenshot src="/img/gemini/gemini-search-all.webp" />
 
 The bottom of the Chat session shows the grounded sources used to answer your query.
 
 You can expand the sources section to see which documents were used to answer your query.
 
-<Screenshot src="/img/gemini-search-all-expanded.webp" />
+<Screenshot src="/img/gemini/gemini-search-all-expanded.webp" />
 
 As sources contain incomplete fragments of your documents, they may not render perfectly in the UI. If needed you can click the filename to download the full original document for reference.
 
@@ -112,13 +112,13 @@ As sources contain incomplete fragments of your documents, they may not render p
 
 When querying a specific category, the extension automatically constructs the `file_search` tool call with the appropriate `metadata_filter` to limit the query to that category of documents.
 
-<Screenshot src="/img/gemini-search-category.webp" />
+<Screenshot src="/img/gemini/gemini-search-category.webp" />
 
 ## Query a Single Document
 
 Simarly, when querying a specific document, the extension constructs the `file_search` tool call with the appropriate `metadata_filter` to limit the query to that single document.
 
-<Screenshot src="/img/gemini-search-document.webp" />
+<Screenshot src="/img/gemini/gemini-search-document.webp" />
 
 ### 4. Syncing
 If you suspect your local data is out of sync with Gemini (e.g., after manual deletion in AI Studio or network interruptions), click the **Sync Store** button.
@@ -126,7 +126,7 @@ If you suspect your local data is out of sync with Gemini (e.g., after manual de
 - It will automatically attempt to repair issues where possible (e.g., updating local metadata).
 - It highlights files that are missing locally or remotely.
 
-<Screenshot src="/img/gemini-sync.webp" />
+<Screenshot src="/img/gemini/gemini-sync.webp" />
 
 
 ## Configuration

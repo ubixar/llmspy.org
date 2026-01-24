@@ -295,7 +295,7 @@ export default function HomePage() {
           </div>
           <div className="rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 dark:bg-white mb-8">
             <Image
-              src="/img/gemini-filestores-upload-folder.webp"
+              src="/img/gemini/gemini-filestores-upload-folder.webp"
               alt="Document Upload with Categories"
               width={1200}
               height={800}
@@ -305,7 +305,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/gemini-filestores.webp"
+                src="/img/gemini/gemini-filestores.webp"
                 alt="Filestore Management"
                 width={600}
                 height={400}
@@ -314,7 +314,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/gemini-sync.webp"
+                src="/img/gemini/gemini-sync.webp"
                 alt="Bidirectional Sync"
                 width={600}
                 height={400}
@@ -325,7 +325,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/gemini-search-all.webp"
+                src="/img/gemini/gemini-search-all.webp"
                 alt="Search All Documents"
                 width={400}
                 height={300}
@@ -334,7 +334,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/gemini-search-category.webp"
+                src="/img/gemini/gemini-search-category.webp"
                 alt="Search by Category"
                 width={400}
                 height={300}
@@ -343,7 +343,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/gemini-search-document.webp"
+                src="/img/gemini/gemini-search-document.webp"
                 alt="Gemini RAG chat with document context"
                 width={400}
                 height={300}
@@ -394,7 +394,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/tool-files.webp"
+                src="/img/tools/tool-files.webp"
                 alt="File System Tools"
                 width={400}
                 height={300}
@@ -423,7 +423,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
-                src="/img/tool-python.webp"
+                src="/img/tools/tool-python.webp"
                 alt="Python Code Execution Tool"
                 width={500}
                 height={500}
@@ -432,7 +432,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
-                src="/img/tool-javascript.webp"
+                src="/img/tools/tool-javascript.webp"
                 alt="JavaScript Code Execution Tool"
                 width={500}
                 height={500}
@@ -441,7 +441,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white max-h-[500px]">
               <LightboxImage
-                src="/img/tool-csharp.webp"
+                src="/img/tools/tool-csharp.webp"
                 alt="C# Code Execution Tool"
                 width={500}
                 height={500}
@@ -481,7 +481,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/tools-chat-gemini-image.webp"
+                src="/img/tools/tools-chat-gemini-image.webp"
                 alt="Gemini image generation via MCP"
                 width={600}
                 height={400}
@@ -501,7 +501,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/tools-exec.webp"
+                src="/img/tools/tools-exec.webp"
                 alt="Execute MCP Tools"
                 width={400}
                 height={300}
@@ -510,7 +510,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
               <LightboxImage
-                src="/img/tools-exec-results.webp"
+                src="/img/tools/tools-exec-results.webp"
                 alt="Tool Execution Results"
                 width={400}
                 height={300}
@@ -520,7 +520,7 @@ export default function HomePage() {
           </div>
           <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
             <LightboxImage
-              src="/img/tools-chat-tetris.webp"
+              src="/img/tools/tools-chat-tetris.webp"
               alt="Interactive HTML results from MCP tools"
               width={1200}
               height={600}

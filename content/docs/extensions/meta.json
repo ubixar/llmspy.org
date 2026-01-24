@@ -7,8 +7,8 @@
     "ui",
     "server",
     "tools",
-    "fast_mcp",
     "core-tools",
+    "computer_use",
     "gemini"
   ]
 }
