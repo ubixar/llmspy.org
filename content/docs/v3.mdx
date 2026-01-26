@@ -457,20 +457,23 @@ llms --add fast_mcp
 
 ### Configuration
 
-MCP servers are configured via a `mcp.json` file. By default, Anthropic's [Filesystem MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) is pre-configured:
+MCP servers are configured via a `mcp.json` file. By default, Anthropic's [Git MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/git) is pre-configured:
 
 ```json
 {
   "mcpServers": {
-    "filesystem": {
-      "description": "Anthropic's MCP Server for secure filesystem operations",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "$PWD"]
-    },
     "git": {
       "command": "uvx",
       "args": ["mcp-server-git", "--repository", "$PWD"]
-    }
+    },
+    "gemini-gen": {
+      "description": "Gemini Image and Audio TTS generation",
+      "command": "uvx",
+      "args": ["gemini-gen-mcp"],
+      "env": {
+        "GEMINI_API_KEY": "$GEMINI_API_KEY"
+      }
+    }    
   }
 }
 ```
@@ -576,7 +579,7 @@ LLMS includes a suite of tools for executing code in various languages within a 
 
 ## Computer Use
 
-The built-in [computer_use](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer_use) extension transforms AI agents into autonomous computer operators. Based on [Anthropic's computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo), it enables agents to see your screen, control the mouse and keyboard, execute shell commands, and edit files - just like a human sitting at the computer.
+The built-in [computer_use](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension transforms AI agents into autonomous computer operators. Based on [Anthropic's computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo), it enables agents to see your screen, control the mouse and keyboard, execute shell commands, and edit files - just like a human sitting at the computer.
 
 This unlocks powerful capabilities that traditional API-based tools cannot achieve:
 
