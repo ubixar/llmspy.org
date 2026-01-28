@@ -12,7 +12,7 @@ The UI is built with simplicity and privacy in mind:
 - **No Build Tools**: Uses native ES modules
 - **No npm Dependencies**: Pure JavaScript
 - **Offline First**: Works entirely offline
-- **Privacy Focused**: All data stored locally in IndexedDB
+- **Privacy Focused**: All data stored locally in SQLite
 - **Fast & Lightweight**: Minimal footprint
 
 ## Key Features
@@ -176,7 +176,7 @@ llms --serve 8000 --root /path/to/ui
 
 ## Storage
 
-All data is stored in browser IndexedDB:
+Data primarily stored in SQLite databases:
 
 - **Conversations**: All chat threads and messages
 - **Activity Logs**: Request history for analytics
