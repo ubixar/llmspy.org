@@ -8,7 +8,7 @@ import { screenshotScreens } from './screenshot-screens';
 import { TabbedImages } from './tabbed-images';
 import { LightboxImage } from './lightbox-image';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Star, Sparkles, Zap, Code2, Image as ImageIcon, Music, Calculator, Puzzle, Search, GalleryHorizontal, Sigma, Plug } from 'lucide-react';
+import { Star, Sparkles, Zap, Code2, Image as ImageIcon, Music, Calculator, Puzzle, Search, GalleryHorizontal, Sigma, Plug, Wand2 } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -180,6 +180,22 @@ export default function HomePage() {
               </Card>
             </Link>
 
+            <Link href="/docs/extensions/skills" className="block">
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                    <Wand2 className="w-5 h-5 text-pink-500" />
+                    Skills Support
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-slate-700 dark:text-slate-300">
+                    Extend AI capabilities with specialized knowledge, workflows, and tools
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
             <Link href="/docs/features/calculator-ui" className="block">
               <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer h-full">
                 <CardHeader>
@@ -217,12 +233,28 @@ export default function HomePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
                     <ImageIcon className="w-5 h-5 text-green-500" />
-                    Image & Audio Generation
+                    Image Generation
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-slate-700 dark:text-slate-300">
-                    Built-in support for Gemini, OpenAI, OpenRouter, Chutes, and Nvidia
+                    Built-in support for Gemini, OpenAI, OpenRouter, Chutes, Z.ai and Nvidia
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/docs/media-generation/audio-generation" className="block">
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                    <Music className="w-5 h-5 text-pink-500" />
+                    Audio Generation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-slate-700 dark:text-slate-300">
+                    TTS support for Gemini 2.5 Flash/Pro Preview models
                   </p>
                 </CardContent>
               </Card>
@@ -526,6 +558,75 @@ export default function HomePage() {
               height={600}
               className="w-full h-auto"
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Skills Section */}
+      <div id="skills" className="w-full my-16 px-4 bg-gradient-to-b from-transparent via-pink-50/50 to-transparent dark:via-pink-950/20 py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              Skills Support
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400">
+              Extend AI capabilities with specialized knowledge, workflows, and tools
+            </p>
+            <Link
+              href="/docs/extensions/skills"
+              className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline mt-2"
+            >
+              Learn more →
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
+              <LightboxImage
+                src="/img/skills/skills-selector.webp"
+                alt="Skills Selector"
+                width={600}
+                height={400}
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
+              <LightboxImage
+                src="/img/skills/skills-manage.webp"
+                alt="Manage Skills"
+                width={600}
+                height={400}
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
+              <LightboxImage
+                src="/img/skills/skills-new.webp"
+                alt="Create New Skills with Skill Creator"
+                width={400}
+                height={300}
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
+              <LightboxImage
+                src="/img/skills/skills-installing.webp"
+                alt="Installing New Skills"
+                width={400}
+                height={300}
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 dark:bg-white">
+              <LightboxImage
+                src="/img/skills/skills-edit-page.webp"
+                alt="Edit Skills"
+                width={400}
+                height={300}
+                className="w-full h-auto"
+              />
+            </div>
           </div>
         </div>
       </div>
