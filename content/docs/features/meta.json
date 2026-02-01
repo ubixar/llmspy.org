@@ -10,6 +10,7 @@
     "run-code-ui",
     "katex",
     "model-selector",
-    "system-prompts"
+    "system-prompts",
+    "providers"
   ]
 }

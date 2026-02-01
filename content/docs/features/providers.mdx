@@ -1,99 +1,221 @@
 ---
 title: Providers
-description: Multi-provider support with intelligent routing and failover and unified configuration.
+description: Access 530+ models from 24 providers via models.dev integration with simplified configuration.
+---
+
+## models.dev Integration
+
+llms.py uses the [models.dev](https://models.dev) open provider and model catalogue—the same actively maintained registry used by [OpenCode](https://opencode.ai). This integration provides access to **530+ models** from **24 providers** out of the box.
+
+Your local `llms.json` provider configuration is a **superset** of [models.dev/api.json](https://models.dev/api.json). Provider definitions are automatically merged, allowing you to enable providers with minimal configuration.
+
+### Simplified Configuration
+
+Enable providers by ID—all configuration is automatically inherited from models.dev:
+
+```json
+{
+  "openai": { "enabled": true },
+  "anthropic": { "enabled": true },
+  "google": { "enabled": true }
+}
+```
+
+That's it. The `base_url`, supported models, pricing, and capabilities are all pulled from models.dev automatically.
+
+### Automatic Updates
+
+Provider definitions are automatically updated daily into your `~/.llms/providers.json`. You can also trigger a manual update:
+
+```bash
+llms --update-providers
+```
+
+As an optimization, only providers referenced in your `llms.json` are saved locally, keeping your configuration lightweight.
+
 ---
 
 ## Supported Providers
 
-llms.py supports 160+ models across 10+ provider types:
+### Cloud Providers
 
-### Cloud Providers (Free Tiers)
-
-Perfect for getting started without API costs:
-
-- **OpenRouter** (Free Models)
-- **Groq**
-- **Google AI Studio** (Free)
-- **Codestral**
-
-### Premium Cloud Providers
-
-For production workloads:
-
-- **OpenAI**
-- **Anthropic**
-- **Google (Paid)**
-- **Grok (X.AI)**
-- **Qwen (Alibaba)**
-- **Z.ai**
-- **Mistral**
-- **OpenRouter** (Paid Models)
+| Provider       | Models | Description |
+|----------------|--------|-------------|
+| OpenAI         | 20+    | GPT-4o, GPT-5, o1, o3 series |
+| Anthropic      | 10+    | Claude Opus 4.5, Sonnet 4, Haiku models |
+| Google         | 25+    | Gemini 2.5 Flash/Pro, experimental models |
+| OpenRouter     | 100+   | Aggregator with free and paid models |
+| xAI            | 5+     | Grok-4, Grok-4-fast models |
+| Groq           | 10+    | Fast inference, competitive pricing |
+| Mistral        | 15+    | Mistral Large, Codestral, open models |
+| DeepSeek       | 2      | DeepSeek V3, R1 reasoning model |
+| Alibaba        | 39     | Qwen series models |
+| Fireworks AI   | 12     | Fast inference platform |
+| GitHub Copilot | 27     | Copilot-integrated models |
+| GitHub Models  | 55     | GitHub-hosted model catalog |
+| Hugging Face   | 14     | Open model inference |
+| Nvidia         | 24     | NIM inference models |
+| Cerebras       | 3      | Fast inference chips |
+| Chutes         | 56     | AI compute platform |
+| MiniMax        | 1      | Chinese AI provider |
+| Moonshot AI    | 5      | Kimi models |
+| Zai            | 6      | Z.ai models |
 
 ### Local Providers
 
-For privacy and cost savings:
+| Provider  | Description |
+|-----------|-------------|
+| Ollama    | Run open models locally |
+| LMStudio  | Desktop app for local models |
 
-- **Ollama**
+<Tip>
+[Raise an issue](https://github.com/ServiceStack/llms/issues) to add support for any missing providers from [models.dev](https://models.dev) you would like to use.
+</Tip>
 
-### Custom Providers
-
-Add any OpenAI-compatible API endpoint.
+---
 
 ## Provider Configuration
 
-Each provider is configured in `~/.llms/llms.json`:
+### Basic Configuration
+
+Provider configuration lives in `~/.llms/llms.json`. Most providers only need `"enabled": true`:
 
 ```json
 {
-  "providers": {
-    "groq": {
-      "enabled": true,
-      "type": "OpenAiProvider",
-      "base_url": "https://api.groq.com/openai",
-      "api_key": "$GROQ_API_KEY",
-      "models": {
-        "llama3.3:70b": "llama-3.3-70b-versatile",
-        "kimi-k2": "moonshotai/kimi-k2-instruct-0905"
-      },
-      "pricing": {
-        "llama3.3:70b": {
-          "input": 0.40,
-          "output": 1.20
-        }
-      },
-      "default_pricing": {
-        "input": 0.05,
-        "output": 0.10
-      }
-    }
+  "google": { "enabled": true },
+  "groq": { "enabled": true },
+  "openrouter": { "enabled": true }
+}
+```
+
+### Overriding Defaults
+
+You can override any inherited setting from models.dev:
+
+```json
+{
+  "openai": {
+    "enabled": true,
+    "api_key": "$MY_CUSTOM_OPENAI_KEY"
   }
 }
 ```
 
-### Configuration Fields
+### Full Configuration Example
 
-- **enabled**: Whether the provider is active
-- **type**: Provider class (OpenAiProvider, GoogleProvider, OllamaProvider)
-- **base_url**: API endpoint URL
-- **api_key**: API key (supports environment variables with `$VAR_NAME`)
-- **models**: Model name mappings (local name → provider name)
-- **pricing**: Cost per 1M tokens (input/output) for each model
-- **default_pricing**: Fallback pricing if model not listed
+For providers not in models.dev or when you need complete control:
+
+```json
+{
+    "enabled": true,
+    "id": "codestral",
+    "npm": "codestral",
+    "api": "https://codestral.mistral.ai/v1",
+    "env": [
+        "CODESTRAL_API_KEY"
+    ],
+    "models": {
+        "codestral-latest": {
+            "id": "codestral-latest",
+            "name": "Codestral",
+            "attachment": false,
+            "reasoning": false,
+            "tool_call": true,
+            "temperature": true,
+            "knowledge": "2024-10",
+            "release_date": "2024-05-29",
+            "last_updated": "2025-01-04",
+            "modalities": {
+                "input": [
+                    "text"
+                ],
+                "output": [
+                    "text"
+                ]
+            },
+            "open_weights": true,
+            "cost": {
+                "input": 0.0,
+                "output": 0.0
+            },
+            "limit": {
+                "context": 256000,
+                "output": 4096
+            }
+        }
+    },
+    "check": {
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "1+1="
+                    }
+                ]
+            }
+        ],
+        "stream": false
+    }
+}
+```
+
+### Provider Fields
+
+| Field | Description |
+|-------|-------------|
+| `enabled` | Whether the provider is active |
+| `id` | Provider identifier |
+| `api` | API endpoint URL |
+| `env` | Array of environment variable names for API keys |
+| `models` | Model definitions (object keyed by model ID) |
+| `check` | Test message configuration for connectivity checks |
+
+### Model Fields
+
+Each model in the `models` object supports:
+
+| Field | Description |
+|-------|-------------|
+| `id` | Model identifier used in API calls |
+| `name` | Human-readable display name |
+| `attachment` | Whether the model supports file attachments |
+| `reasoning` | Whether the model has reasoning/thinking capability |
+| `tool_call` | Whether the model supports function/tool calling |
+| `temperature` | Whether the model supports temperature parameter |
+| `knowledge` | Knowledge cutoff date (e.g., `"2024-10"`) |
+| `release_date` | Model release date |
+| `last_updated` | When the model definition was last updated |
+| `modalities.input` | Supported input types (`text`, `image`, `audio`, `file`) |
+| `modalities.output` | Supported output types (`text`, `image`, `audio`) |
+| `open_weights` | Whether model weights are publicly available |
+| `cost.input` | Cost per 1M input tokens |
+| `cost.output` | Cost per 1M output tokens |
+| `limit.context` | Maximum context window size in tokens |
+| `limit.output` | Maximum output tokens per request |
+
+---
 
 ## Environment Variables
 
 Set API keys as environment variables:
 
 ```bash
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export GOOGLE_API_KEY="AIza..."
 export OPENROUTER_API_KEY="sk-or-..."
 export GROQ_API_KEY="gsk_..."
-export GOOGLE_FREE_API_KEY="AIza..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-export OPENAI_API_KEY="sk-..."
-export GROK_API_KEY="xai-..."
-export DASHSCOPE_API_KEY="sk-..."  # Qwen
-export ZAI_API_KEY="sk-..."
+export XAI_API_KEY="xai-..."
 export MISTRAL_API_KEY="..."
+export DEEPSEEK_API_KEY="sk-..."
+export DASHSCOPE_API_KEY="sk-..."     # Alibaba/Qwen
+export FIREWORKS_API_KEY="..."
+export GITHUB_TOKEN="ghp_..."         # GitHub Models
+export HUGGINGFACE_API_KEY="hf_..."
+export NVIDIA_API_KEY="nvapi-..."
+export CHUTES_API_KEY="..."
 ```
 
 Reference in config with `$` prefix:
@@ -104,108 +226,7 @@ Reference in config with `$` prefix:
 }
 ```
 
-## Provider Types
-
-### OpenAI Provider
-
-Generic provider for OpenAI-compatible APIs:
-
-```json
-{
-  "type": "OpenAiProvider",
-  "base_url": "https://api.openai.com",
-  "api_key": "$OPENAI_API_KEY"
-}
-```
-
-Used by:
-- OpenAI
-- Anthropic
-- OpenRouter
-- Grok
-- Groq
-- Qwen
-- Z.ai
-- Mistral
-- Codestral
-
-### Google Provider
-
-Native Google Gemini API:
-
-```json
-{
-  "type": "GoogleProvider",
-  "base_url": "https://generativelanguage.googleapis.com",
-  "api_key": "$GOOGLE_API_KEY"
-}
-```
-
-Handles Google-specific request/response format.
-
-### Ollama Provider
-
-Local Ollama provider with auto-discovery:
-
-```json
-{
-  "type": "OllamaProvider",
-  "base_url": "http://localhost:11434",
-  "models": {},
-  "all_models": true
-}
-```
-
-- **all_models**: Auto-discover installed models
-- **models**: Restrict to specific models if needed
-
-## Intelligent Routing
-
-### Provider Order
-
-Providers are tried in the order they appear in `llms.json`:
-
-```json
-{
-  "providers": {
-    "groq": { ... },           // Tried first (free)
-    "openrouter_free": { ... }, // Tried second (free)
-    "openai": { ... }           // Tried last (paid)
-  }
-}
-```
-
-### Automatic Failover
-
-If a provider fails, the next available provider is automatically tried:
-
-1. Request sent to first enabled provider with the model
-2. If it fails, try next enabled provider
-3. Continue until success or all providers exhausted
-4. Return error if no providers succeed
-
-### Model Mapping
-
-Use unified model names across providers:
-
-```json
-{
-  "providers": {
-    "groq": {
-      "models": {
-        "kimi-k2": "moonshotai/kimi-k2-instruct-0905"
-      }
-    },
-    "openrouter": {
-      "models": {
-        "kimi-k2": "moonshotai/kimi-k2"
-      }
-    }
-  }
-}
-```
-
-Request with `-m kimi-k2` works with either provider.
+---
 
 ## Managing Providers
 
@@ -213,221 +234,103 @@ Request with `-m kimi-k2` works with either provider.
 
 ```bash
 # Enable providers
-llms --enable groq openai
+llms --enable google anthropic openai
 
 # Disable providers
 llms --disable ollama
 
-# Enable multiple
-llms --enable openrouter_free google_free groq codestral
+# List all providers and their models
+llms ls
 
-# Disable multiple
-llms --disable openai anthropic grok
+# List models for specific provider
+llms ls google
 ```
 
 ### Enable/Disable in UI
 
-Toggle providers in the web UI:
+Toggle providers directly in the Model Selector:
 
-![Providers UI](/img/model-selector-providers.webp)
+<Screenshot src="/img/model-selector-providers.webp" />
 
-- Click to enable/disable
+- Click to enable/disable providers
 - See available models per provider
 - Changes persist to config file
 
-### List Providers
+### Update Provider Definitions
 
 ```bash
-# List all providers
-llms --list
-llms ls
-
-# List specific providers
-llms ls groq anthropic
+# Manually update from models.dev
+llms --update-providers
 ```
 
-Shows:
-- Enabled/disabled status
-- Available models
-- API key configuration status
+---
 
-## Provider Details
+## Custom Providers
 
-### OpenRouter
+### Adding to providers-extra.json
 
-Access 100+ models from various providers:
+For providers not included in models.dev, add them to `~/.llms/providers-extra.json`:
 
 ```json
 {
-  "openrouter_free": {
-    "enabled": true,
+  "my_custom_api": {
     "type": "OpenAiProvider",
-    "base_url": "https://openrouter.ai/api",
-    "api_key": "$OPENROUTER_API_KEY",
+    "base_url": "https://my-api.example.com",
+    "api_key": "$MY_API_KEY",
     "models": {
-      "grok-4": "x-ai/grok-4",
-      "llama4:400b": "meta-llama/llama-4-maverick"
+      "custom-model-1": "model-id-1",
+      "custom-model-2": "model-id-2"
     }
   }
 }
 ```
 
-**Free Models Available**: Yes
-**API Key**: Required (free tier available)
+These definitions are merged into your `providers.json` on every update.
 
-### Groq
-
-Fast inference with competitive pricing:
+Then enable in your `llms.json`:
 
 ```json
 {
-  "groq": {
-    "enabled": true,
-    "type": "OpenAiProvider",
-    "base_url": "https://api.groq.com/openai",
-    "api_key": "$GROQ_API_KEY",
-    "models": {
-      "llama3.3:70b": "llama-3.3-70b-versatile",
-      "kimi-k2": "moonshotai/kimi-k2-instruct-0905"
-    }
-  }
+  "my_custom_api": { "enabled": true }
 }
 ```
 
-**Free Tier**: Yes
-**API Key**: Required
+### Provider Types
 
-### Google (Free)
-
-Google AI Studio with free tier:
-
-```json
-{
-  "google_free": {
-    "enabled": true,
-    "type": "GoogleProvider",
-    "base_url": "https://generativelanguage.googleapis.com",
-    "api_key": "$GOOGLE_FREE_API_KEY",
-    "models": {
-      "gemini-2.5-flash": "gemini-2.5-flash-002"
-    }
-  }
-}
-```
-
-**Free Tier**: Yes (generous limits)
-**API Key**: Required
-
-### OpenAI
-
-Official OpenAI models:
-
-```json
-{
-  "openai": {
-    "enabled": false,
-    "type": "OpenAiProvider",
-    "base_url": "https://api.openai.com",
-    "api_key": "$OPENAI_API_KEY",
-    "models": {
-      "gpt-5": "gpt-5",
-      "gpt-4o": "gpt-4o"
-    }
-  }
-}
-```
-
-**Free Tier**: No
-**API Key**: Required
-
-### Anthropic (Claude)
-
-Claude models:
-
-```json
-{
-  "anthropic": {
-    "enabled": false,
-    "type": "OpenAiProvider",
-    "base_url": "https://api.anthropic.com",
-    "api_key": "$ANTHROPIC_API_KEY",
-    "models": {
-      "claude-sonnet-4-0": "claude-sonnet-4-0"
-    }
-  }
-}
-```
-
-**Free Tier**: No
-**API Key**: Required
-
-### Grok (X.AI)
-
-X.AI's Grok models:
-
-```json
-{
-  "grok": {
-    "enabled": false,
-    "type": "OpenAiProvider",
-    "base_url": "https://api.x.ai",
-    "api_key": "$GROK_API_KEY",
-    "models": {
-      "grok-4": "grok-4",
-      "grok-4-fast": "grok-4-fast"
-    }
-  }
-}
-```
-
-**Free Tier**: No
-**API Key**: Required
+| Type | Used For |
+|------|----------|
+| `OpenAiProvider` | OpenAI-compatible APIs (most providers) |
+| `GoogleProvider` | Native Google Gemini API |
+| `AnthropicProvider` | Native Anthropic Messages API (interleaved thinking) |
+| `OllamaProvider` | Local Ollama with auto-discovery |
 
 ### Ollama (Local)
 
-Local models with Ollama:
+Ollama supports automatic model discovery:
 
 ```json
 {
   "ollama": {
-    "enabled": false,
-    "type": "OllamaProvider",
-    "base_url": "http://localhost:11434",
-    "models": {},
+    "enabled": true,
     "all_models": true
   }
 }
 ```
 
-**Cost**: Free (local)
-**API Key**: Not required
-**Setup**: Requires Ollama installed and running
+- `all_models`: Auto-discover all installed models
+- Runs locally at `http://localhost:11434`
 
-## Custom Providers
+---
 
-Add any OpenAI-compatible provider:
+## Non-OpenAI Compatible Providers
 
-```json
-{
-  "providers": {
-    "my_custom_provider": {
-      "enabled": true,
-      "type": "OpenAiProvider",
-      "base_url": "https://my-api.example.com",
-      "api_key": "$MY_API_KEY",
-      "models": {
-        "custom-model": "provider-model-name"
-      },
-      "pricing": {
-        "custom-model": {
-          "input": 1.00,
-          "output": 2.00
-        }
-      }
-    }
-  }
-}
-```
+Providers that don't use the OpenAI-compatible API format are implemented as extensions in the [providers](https://github.com/ServiceStack/llms/tree/main/llms/extensions/providers) folder using the `ctx.add_provider()` API.
+
+These include specialized implementations for:
+- **Anthropic** - Interleaved thinking support for improved agentic performance
+- **Google** - Native Gemini API with tool calling and RAG features
+
+---
 
 ## Checking Provider Status
 
@@ -435,41 +338,44 @@ Test provider connectivity:
 
 ```bash
 # Check all models for a provider
-llms --check groq
+llms --check google
 
 # Check specific models
-llms --check groq kimi-k2 llama4:400b gpt-oss:120b
+llms --check openai gpt-4o gpt-5
 ```
 
 Shows:
 - ✅ Working models with response times
 - ❌ Failed models with error messages
-- Provider availability
+
+---
 
 ## Best Practices
 
 ### Cost Optimization
 
-1. **Free First**: Enable free providers before paid ones
-2. **Local When Possible**: Use Ollama for privacy/cost
+1. **Free First**: Enable free-tier providers (Groq, OpenRouter free models) first
+2. **Local When Possible**: Use Ollama for privacy and cost savings
 3. **Monitor Costs**: Use analytics to track spending
 
 ### Reliability
 
-1. **Multiple Providers**: Enable multiple providers for failover
+1. **Multiple Providers**: Enable multiple providers for automatic failover
 2. **Test Regularly**: Use `--check` to verify connectivity
-3. **Monitor Performance**: Track response times in analytics
+3. **Keep Updated**: Run `--update-providers` periodically
 
 ### Security
 
-1. **Environment Variables**: Never commit API keys
+1. **Environment Variables**: Never commit API keys to source control
 2. **Minimal Permissions**: Use least-privilege API keys
 3. **Rotate Keys**: Regularly rotate API keys
+
+---
 
 ## Next Steps
 
 <Cards>
+  <Card title="Model Selector" href="/docs/features/model-selector" />
   <Card title="Configuration" href="/docs/configuration" />
-  <Card title="Analytics" href="/docs/features/analytics" />
-  <Card title="CLI Reference" href="/docs/cli" />
+  <Card title="CLI Reference" href="/docs/features/cli" />
 </Cards>
