@@ -410,29 +410,32 @@ Existing Image Generation Providers implemented this way include:
 
 ### Ollama (Local)
 
-Ollama supports automatic model discovery:
+If no `map_models` have been configured the Ollama will use automatic model discovery to populate its models:
 
 ```json
 {
   "ollama": {
-    "enabled": true,
-    "all_models": true
+    "enabled": false,
+    "npm": "ollama",
+    "api": "http://localhost:11434"
   }
 }
 ```
 
-- `all_models`: Auto-discover all installed models
-- Runs locally at `http://localhost:11434`
+### LM Studio (Local)
 
----
+Likewise for LM Studio, which can be enabled with minimal configuration:
 
-## Non-OpenAI Compatible Providers
-
-Providers that don't use the OpenAI-compatible API format are implemented as extensions in the [providers](https://github.com/ServiceStack/llms/tree/main/llms/extensions/providers) folder using the `ctx.add_provider()` API.
-
-These include specialized implementations for:
-- **Anthropic** - Interleaved thinking support for improved agentic performance
-- **Google** - Native Gemini API with tool calling and RAG features
+```json
+{
+    "lmstudio": {
+        "enabled": false,
+        "npm": "lmstudio",
+        "api": "http://127.0.0.1:1234/v1",
+        "models": {}
+    },
+}
+```
 
 ---
 
