@@ -33,51 +33,6 @@ llms --update-providers
 
 As an optimization, only providers referenced in your `llms.json` are saved locally, keeping your configuration lightweight.
 
-### Extra Providers
-
-Any additional providers you want to use that are not included in models.dev can be added to your `~/.llms/providers-extra.json`, which get merged into your `providers.json` on every update. This keeps your local configuration file lightweight by only including the providers that are available for use.
-
-This is used in the default [providers-extra.json](https://github.com/ServiceStack/llms/blob/main/llms/providers-extra.json) for image generation providers which are not yet supported in models.dev, e.g:
-
-```json
-{
-    "chutes": {
-        "models": {
-            "chutes-z-image-turbo": {
-                "name": "Z Image Turbo",
-                "modalities": {
-                    "input": [
-                        "text"
-                    ],
-                    "output": [
-                        "image"
-                    ]
-                }
-            }
-        }
-    },
-    "zai": {
-        "models": {
-            "glm-image": {
-                "name": "GLM-Image",
-                "modalities": {
-                    "input": [
-                        "text"
-                    ],
-                    "output": [
-                        "image"
-                    ]
-                },
-                "cost": {
-                    "input": 0,
-                    "output": 0.015
-                }
-            }
-        }
-    }
-}
-```
-
 ---
 
 ## Supported Providers
@@ -319,9 +274,12 @@ For providers not included in models.dev, add them to `~/.llms/providers-extra.j
 ```json
 {
   "my_custom_api": {
-    "type": "OpenAiProvider",
-    "base_url": "https://my-api.example.com",
-    "api_key": "$MY_API_KEY",
+    "id": "my_custom_api",
+    "npm": "@ai-sdk/openai-compatible",
+    "api": "https://my-api.example.com/v1",
+    "env": [
+      "MY_CUSTOM_API_KEY"
+    ],
     "models": {
       "custom-model-1": "model-id-1",
       "custom-model-2": "model-id-2"
@@ -340,14 +298,115 @@ Then enable in your `llms.json`:
 }
 ```
 
+### Extra Providers
+
+This is used in the default [providers-extra.json](https://github.com/ServiceStack/llms/blob/main/llms/providers-extra.json) for image generation providers which are not yet supported in models.dev, like [GLM-Image](https://z.ai/blog/glm-image) e.g:
+
+```json
+{
+    "zai": {
+        "models": {
+            "glm-image": {
+                "name": "GLM-Image",
+                "modalities": {
+                    "input": [
+                        "text"
+                    ],
+                    "output": [
+                        "image"
+                    ]
+                },
+                "cost": {
+                    "input": 0,
+                    "output": 0.015
+                }
+            }
+        }
+    }
+}
+```
+
 ### Provider Types
 
-| Type | Used For |
-|------|----------|
-| `OpenAiProvider` | OpenAI-compatible APIs (most providers) |
-| `GoogleProvider` | Native Google Gemini API |
-| `AnthropicProvider` | Native Anthropic Messages API (interleaved thinking) |
-| `OllamaProvider` | Local Ollama with auto-discovery |
+llms.py providers are implemented as classes extending the base `OpenAiCompatible` class for OpenAI-compatible APIs and includes built-in implementations for several popular OpenAI Chat Completion providers.
+
+| Type                  | npm                       | Description |
+|-----------------------|---------------------------|-------------|
+| `OpenAiCompatible`    | @ai-sdk/openai-compatible | OpenAI-compatible APIs (most providers) |
+| `MistralProvider`     | @ai-sdk/mistral           | Access Mistral models |
+| `GroqProvider`        | @ai-sdk/groq              | Access models hosted on Groq |
+| `XaiProvider`         | @ai-sdk/xai               | Access xAI models |
+| `CodestralProvider`   | codestral                 | Access Mistral's Codestral models |
+| `OllamaProvider`      | ollama                    | Access local models via Ollama |
+| `LMStudioProvider`    | lmstudio                  | Access local models via LM Studio |
+| `OpenAiLocalProvider` | openai-local              | Access generic OpenAI-compatible local endpoints |
+
+Additional OpenAI-compatible providers are implemented and registered in the [providers](https://github.com/ServiceStack/llms/tree/main/llms/extensions/providers) folder using the `ctx.add_provider()` API with a custom `OpenAiCompatible`, e.g:
+
+```python
+from llms.main import OpenAiCompatible
+
+class AnthropicProvider(OpenAiCompatible):
+    sdk = "@ai-sdk/anthropic"
+    #...
+
+ctx.add_provider(AnthropicProvider)
+```
+
+### Custom Provider implementations
+
+| Type                  | npm                       | Description |
+|-----------------------|---------------------------|-------------|
+| `AnthropicProvider`   | @ai-sdk/anthropic | Access Claude models using Anthropic's messages API |
+| `CerebrasProvider`    | @ai-sdk/cerebras  | Access Cerebras models |
+| `GoogleProvider`      | @ai-sdk/google    | Google models using the Gemini API |
+| `OpenAiProvider`      | @ai-sdk/openai    | Access OpenAI models using Chat Completions API |
+
+### Multi Modal Generation Providers
+
+For providers that support multiple modalities (e.g., image generation), custom provider implementations should instead extend the `GeneratorBase` class as done in [providers/openrouter.py](https://github.com/ServiceStack/llms/blob/main/llms/extensions/providers/openrouter.py) that extends the `GeneratorBase` class to add support for image generation in  **OpenRouter**.
+
+```python
+def install(ctx):
+    from llms.main import GeneratorBase
+
+    # https://openrouter.ai/docs/guides/overview/multimodal/image-generation
+    class OpenRouterGenerator(GeneratorBase):
+        sdk = "openrouter/image"
+        #...
+
+    ctx.add_provider(OpenRouterGenerator)
+
+
+__install__ = install
+```
+
+This new implementation can be used by registering it as the **image** modality whose **npm** matches the providers **sdk** in `llms.json`, e.g:
+
+```json
+{
+    "openrouter": {
+        "enabled": true,
+        "id": "openrouter",
+        "modalities": {
+            "image": {
+                "name": "OpenRouter Image",
+                "npm": "openrouter/image"
+            }
+        }
+    }
+}
+```
+
+Existing Image Generation Providers implemented this way include:
+
+| Type                  | npm               | Description |
+|-----------------------|-------------------|-------------|
+| `ChutesImage`         | openai-local      | Chutes image generation provider |
+| `NvidiaGenAi`         | nvidia/image      | NVIDIA GenAI image generation provider |
+| `OpenAiGenerator`     | openai/image      | OpenAI image generation provider |
+| `OpenRouterGenerator` | openrouter/image  | OpenRouter image generation provider |
+| `ZaiGenerator`        | zai/image         | Zai image generation provider |
 
 ### Ollama (Local)
 
