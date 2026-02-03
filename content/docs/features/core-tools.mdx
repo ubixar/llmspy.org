@@ -7,64 +7,6 @@ These tools defined in the [core_tools](https://github.com/ServiceStack/llms/blo
 
 See [Tools Docs](/docs/extensions/tools) for details on registering and using your own tools.
 
-## Memory Tools
-
-Functions for persistent key-value storage.
-
-### `memory_read(key: str) -> Any`
-
-Read a value from persistent memory.
-
-- **key**: The key to retrieve.
-
-### `memory_write(key: str, value: Any) -> bool`
-
-Write a value to persistent memory.
-
-- **key**: The storage key.
-- **value**: The value to store.
-
-## File System Tools
-
-All file system operations are restricted to the current working directory for safety.
-
-### `read_file(path: str) -> str`
-
-Read a text file from disk.
-
-- **path**: Relative path to the file.
-
-### `write_file(path: str, content: str) -> bool`
-
-Write text to a file (overwrites existing content).
-
-- **path**: Relative path to the file.
-- **content**: Text content to write.
-
-### `list_directory(path: str) -> str`
-
-List directory contents including file names, sizes, and modification times.
-
-- **path**: Relative path to the directory.
-
-### `glob_paths(pattern: str, extensions: List[str] = None, sort_by: str = "path", max_results: int = 100) -> Dict`
-
-Find files and directories matching a glob pattern.
-
-- **pattern**: Glob pattern to match.
-- **extensions**: Optional list of file extensions to filter by.
-- **sort_by**: Sort criteria ("path", "modified", "size").
-- **max_results**: Maximum number of results to return.
-
-## Search Tools
-
-### `semantic_search(query: str, top_k: int = 5) -> List[Dict]`
-
-Perform a semantic search (currently a placeholder implementation).
-
-- **query**: The search query string.
-- **top_k**: Number of top results to return.
-
 ## Math & Logic
 
 ### `calc(expression: str) -> str`
@@ -84,6 +26,43 @@ Get the current time in ISO-8601 format.
 ## Code Execution Tools
 
 LLMS includes a suite of tools for executing code in various languages within a sandboxed environment. These tools are designed to allow the agent to run scripts, perform calculations, and verify logic safely.
+
+## File System Tools
+
+The built-in [computer](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension [filesystem.py](https://github.com/ServiceStack/llms/blob/main/llms/extensions/computer/filesystem.py) tools provide a native Python implementation of Anthropic's node.js [Filesystem MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) tools:
+
+* `read_text_file` - Read complete contents of a file as text
+* `read_media_file` - Read an image or audio file
+* `read_multiple_files` - Read multiple files simultaneously
+* `write_file` - Create new file or overwrite existing (exercise caution with this)
+* `edit_file` - Make selective edits using advanced pattern matching and formatting
+* `create_directory` - Create new directory or ensure it exists
+* `list_directory` - List directory contents with [FILE] or [DIR] prefixes
+* `list_directory_with_sizes` - List directory contents with [FILE] or [DIR] prefixes, including file sizes
+* `move_file` - Move or rename files and directories
+* `search_files` - Recursively search for files/directories that match or do not match patterns
+* `directory_tree` - Get recursive JSON tree structure of directory contents
+* `get_file_info` - Get detailed file/directory metadata
+* `list_allowed_directories` - List all directories the server is allowed to access
+
+<Screenshot src="/img/tools/tool-files.webp" />
+
+## Computer Use
+
+The built-in [computer](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension transforms AI agents into autonomous computer operators. Based on [Anthropic's computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo), it enables agents to see your screen, control the mouse and keyboard, execute shell commands, and edit files - just like a human sitting at the computer.
+
+This unlocks powerful capabilities that traditional API-based tools cannot achieve:
+
+- **Visual Verification**: Confirm that code actually renders correctly in a browser
+- **Desktop Automation**: Control any GUI application - web browsers, IDEs, terminals
+- **End-to-End Workflows**: Chain together multiple applications in a single task
+- **Legacy Applications**: Automate software that lacks APIs
+
+For example, an agent can write a web application, open a browser, and capture a screenshot to prove it works:
+
+<Screenshot src="/img/tools/computer_use_tetris.webp" />
+
+See the [Computer Use](/docs/extensions/computer_use) docs for complete usage details.
 
 ## Supported Languages
 

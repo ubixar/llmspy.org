@@ -525,24 +525,6 @@ For [Omarchy](https://omarchy.org) users, the [Omarchy MCP](/docs/mcp/omarchy_mc
 
 The built-in [core_tools](https://github.com/ServiceStack/llms/blob/main/llms/extensions/core_tools/__init__.py) extension provides essential functionality for LLMs to interact with their environment, perform calculations, and manage persistent data.
 
-### Memory Tools
-
-Functions for persistent key-value storage.
-
-* `memory_read` - Read a value from persistent memory.
-* `memory_write` - Write a value to persistent memory.
-
-### File System Tools
-
-All file system operations are restricted to the current working directory for safety.
-
-* `read_file` - Read a text file from disk.
-* `write_file` - Write text to a file (overwrites existing content).
-* `list_directory` - List directory contents including file names, sizes, and modification times.
-* `glob_paths` - Find files and directories matching a glob pattern.
-
-<Screenshot src="/img/tools/tool-files.webp" />
-
 ### Utilities
 
 * `get_current_time` - Get the current time in ISO-8601 format.
@@ -577,9 +559,29 @@ LLMS includes a suite of tools for executing code in various languages within a 
     'Run C#': '/img/tools/tool-csharp.webp',
 }} />
 
+## File System Tools
+
+The built-in [computer](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension [filesystem.py](https://github.com/ServiceStack/llms/blob/main/llms/extensions/computer/filesystem.py) tools provide a native Python implementation of Anthropic's node.js [Filesystem MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) tools which allow LLMs to interact with the local file system in a safe and controlled manner enabling reading, writing, and searching of allowed files and directories only.
+
+* `read_text_file` - Read complete contents of a file as text
+* `read_media_file` - Read an image or audio file
+* `read_multiple_files` - Read multiple files simultaneously
+* `write_file` - Create new file or overwrite existing (exercise caution with this)
+* `edit_file` - Make selective edits using advanced pattern matching and formatting
+* `create_directory` - Create new directory or ensure it exists
+* `list_directory` - List directory contents with [FILE] or [DIR] prefixes
+* `list_directory_with_sizes` - List directory contents with [FILE] or [DIR] prefixes, including file sizes
+* `move_file` - Move or rename files and directories
+* `search_files` - Recursively search for files/directories that match or do not match patterns
+* `directory_tree` - Get recursive JSON tree structure of directory contents
+* `get_file_info` - Get detailed file/directory metadata
+* `list_allowed_directories` - List all directories the server is allowed to access
+
+<Screenshot src="/img/tools/tool-files.webp" />
+
 ## Computer Use
 
-The built-in [computer_use](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension transforms AI agents into autonomous computer operators. Based on [Anthropic's computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo), it enables agents to see your screen, control the mouse and keyboard, execute shell commands, and edit files - just like a human sitting at the computer.
+The built-in [computer](https://github.com/ServiceStack/llms/tree/main/llms/extensions/computer) extension transforms AI agents into autonomous computer operators. Based on [Anthropic's computer use tools](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo), it enables agents to see your screen, control the mouse and keyboard, execute shell commands, and edit files - just like a human sitting at the computer.
 
 This unlocks powerful capabilities that traditional API-based tools cannot achieve:
 
