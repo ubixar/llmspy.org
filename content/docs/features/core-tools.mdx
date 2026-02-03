@@ -9,23 +9,13 @@ See [Tools Docs](/docs/extensions/tools) for details on registering and using yo
 
 ## Math & Logic
 
-### `calc(expression: str) -> str`
-
-Evaluate a mathematical expression. Supports arithmetic, comparison, boolean operators, and common math functions.
-
-- **expression**: The mathematical expression string (e.g., `sqrt(16) + 5`).
+* `calc(expression: str) -> str` - Evaluate a mathematical expression. Supports arithmetic, comparison, boolean operators, and common math functions.
+  - **expression**: The mathematical expression string (e.g., `sqrt(16) + 5`).
 
 ## Utilities
 
-### `get_current_time(tz_name: str = None) -> str`
-
-Get the current time in ISO-8601 format.
-
-- **tz_name**: Optional timezone name (e.g., 'America/New_York'). Defaults to UTC.
-
-## Code Execution Tools
-
-LLMS includes a suite of tools for executing code in various languages within a sandboxed environment. These tools are designed to allow the agent to run scripts, perform calculations, and verify logic safely.
+* `get_current_time(tz_name: str = None) -> str` - Get the current time in ISO-8601 format.
+    - **tz_name**: Optional timezone name (e.g., 'America/New_York'). Defaults to UTC.
 
 ## File System Tools
 
@@ -63,6 +53,10 @@ For example, an agent can write a web application, open a browser, and capture a
 <Screenshot src="/img/tools/computer_use_tetris.webp" />
 
 See the [Computer Use](/docs/extensions/computer_use) docs for complete usage details.
+
+## Code Execution Tools
+
+LLMS includes a suite of tools for executing code in various languages within a sandboxed environment. These tools are designed to allow the agent to run scripts, perform calculations, and verify logic safely.
 
 ## Supported Languages
 
